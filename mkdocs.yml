@@ -1,0 +1,80 @@
+site_name: poly的技术日志
+site_url: https://poly.popopo
+site_description: 开源开发者 | RISC-V贡献者 | 全栈工程师
+site_author: poly
+
+repo_name: polypopopo/tech-blog
+repo_url: https://github.com/polypopopo/blog
+
+copyright: Copyright &copy; 2021-2025 谭峻瀚
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.tabs
+    - toc.integrate
+    - search.highlight
+    - search.suggest
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: 浅色模式
+    - scheme: slate
+      primary: deep purple
+      accent: lime
+      toggle:
+        icon: material/weather-night
+        name: 深色模式
+  icon:
+    repo: fontawesome/brands/github
+    admonition:
+      note: material/notebook-edit
+      tip: material/lightbulb-on
+
+extra_css:
+  - assets/css/custom.css
+
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  - assets/js/mermaid-loader.js
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      type: datetime
+      timezone: Asia/Shanghai
+  - mermaid2:
+      arguments:
+        theme: forest
+        flowchart:
+          useMaxWidth: false
+  - macros:
+      module_name: docs/macros.py
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      permalink: true
+
+plugins:
+  - git-revision-date-localized:
+      fallback_to_build_date: true

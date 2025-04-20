@@ -1,0 +1,35 @@
+# OSChengdu 开源社区
+
+![社区活动照](assets/images/oschendgu-meetup.jpg){ width=500 }
+
+## 社区结构
+
+```mermaid
+graph TD
+    A[核心维护组] --> B[项目开发]
+    A --> C[活动组织]
+    B --> D[Gitlings]
+    B --> E[SynthNexus]
+    C --> F[月度技术沙龙]
+    C --> G[黑客马拉松]
+```
+
+## 关键数据
+
+| 指标         | 数据       |
+|--------------|-----------|
+| 成立时间     | 2023.03   |
+| 活跃成员     | 10+高校   |
+| GitHub Stars | 1.2k+     |
+| 举办活动     | 6场/年    |
+
+## 典型工作流
+
+```bash
+# 新成员加入流程
+1. 提交PR通过基础考核
+2. 参与至少1个good first issue
+3. 核心成员投票(需2 LGTM)
+```
+
+[社区章程](https://oschengdu.org/charter)
