@@ -2,7 +2,8 @@
 
 ## 项目概述
 
-OSChengdu官网旨在打造一个沉浸式交互空间，融合创新的视觉风格与科技感。访问者可探索交互式3D元素，体验科幻风格的视觉特效，同时深入了解开源社区文化与项目成果。
+OSChengdu官网旨在打造一个沉浸式交互空间，融合创新的视觉风格与科技感。访问者可探索交互式3D元素，体验科幻风格的视觉特效，同时深入了解开源社区文化与项目成果。风格灵感来自HackaSAT
+![HackSAT](./assets/1.png)
 
 ## 技术栈
 
@@ -26,7 +27,7 @@ graph TD
 | 模块           | 描述                                                         |
 | -------------- | ------------------------------------------------------------ |
 | **工作室场景** | 等高推车（成员档案）、量子计算机（Docker终端）、电工桌（博客/专题文章）、魔法传送门（友站链接） |
-| **视觉特效**   | 蜘蛛侠平行宇宙风格（色散/错位）、赛博朋克灯光（霓虹渐变+Low Poly） |
+| **视觉特效**   | <蜘蛛侠平行宇宙>风格（色散/错位）、赛博朋克灯光（霓虹渐变+Low Poly） |
 | **交互功能**   | 3D物品旋转/拖拽、命令行小游戏、声控灯光、实时协作光标等      |
 | **创意彩蛋**   | 开源燃料罐（贡献排行榜）、故障公告板、兔子洞彩蛋、隐藏Boss等 |
 
@@ -146,8 +147,3 @@ npm run build
 
 请查看[CONTRIBUTING.md](https://sourcegraph.com/cody/chat/MjAyNC0wNS0yN1QyMjowMjoyNC4wMTVa?signin=OpenIDConnect&signin=OpenIDConnect)了解详细贡献流程。
 
-## 许可证
-
-本项目采用[MIT许可证](https://sourcegraph.com/cody/chat/MjAyNC0wNS0yN1QyMjowMjoyNC4wMTVa?signin=OpenIDConnect&signin=OpenIDConnect)。
-
-© 2025 OSChengdu开源组织 - 用代码连接开源世界
