@@ -69,6 +69,10 @@
             color: #666;
             font-style: italic;
         }
+        .future-date {
+            color: #d81b60;
+            font-weight: bold;
+        }
         ul {
             padding-left: 20px;
         }
@@ -182,6 +186,18 @@
             background: #fff8e1;
             color: #ff8f00;
         }
+        .status.future {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        /* 媒体提及样式 */
+        .media-mention {
+            border-left: 3px solid #5e35b1;
+            padding-left: 10px;
+            margin: 10px 0;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -190,8 +206,12 @@
         <div class="contact">
             ppolitenhammerc@gmail.com | juantan@onionmail.org<br>
             GitHub: <a href="https://github.com/polypopopo" target="_blank">github.com/polypopopo</a><br>
-            电子科技大学成都学院2025届毕业生(专科)<br>
+	    rednotea <a href="https://www.xiaohongshu.com/user/profile/63462a61000000001901f69d">5463671145 3L</a> <br>
+	    电话 17781419542 <br>
+	    电子科技大学成都学院2025届毕业生(专科)<br>
+	    Telegram: Racine imaginaire, <a href="https://t.me/polypopopo">@polypopopo</a><br>
             开发环境: Arch Linux & Fedora Server
+
         </div>
     </header>
 
@@ -274,9 +294,20 @@
 
         <h3>其他社区参与</h3>
         <ul>
+            <li><strong><a href="https://opencamp.cn" target="_blank">OpenCamp训练营</a></strong>: 担任三个训练营的助教/讲师           
             <li><strong><a href="https://gosim.org/" target="_blank">GOSIM CHINA</a></strong>: 协助组织技术沙龙，并首邀演讲</li>
-            <li><strong><a href="https://opencamp.cn/gosim/camp/MoFA2025/stage/1" target="_blank">MOFA社区</a></strong>: 开发购物智能体(比赛三等奖)</li>
+            
+            <li><strong><a href="https://opencamp.cn/gosim/camp/MoFA2025/stage/1" target="_blank">MOFA社区</a></strong>: 
+                <ul>
+                    <li>开发基于知识图谱的购物智能体(比赛三等奖)</li>
+                    <li>接受<a href="https://www.csdn.net/" target="_blank">CSDN</a>资深记者何苗专访，讨论智能体参赛经验</li>
+                    <div class="media-mention">
+                    </div>
+                </ul>
+            </li>
+            
             <li><strong><a href="https://github.com/HOAC-OS2EDU/HOAC-OS2EDU" target="_blank">HOAC华科开源俱乐部</a></strong>: 参与博客平台开发</li>
+            
             <li><strong><a href="https://github.com/rustsbi/rustsbi/issues/118" target="_blank">RustSBI</a></strong>: 提交关键补丁(#118)</li>
         </ul>
     </section>
@@ -285,7 +316,7 @@
         <h2>社区赛事</h2>
         <ul>
             <li><strong><a href="https://opencamp.cn/gosim/camp/MoFA2025/stage/1" target="_blank">MOFA智能体大赛</a></strong> 三等奖 队长 3人参与 负责架构和全栈开发</li>
-	    <li><strong><a gref="https://www.marscode.cn/events/2024-competition">MarsCode编程赛</a></strong> 初赛第二/决赛第七 4人参与 队长 总共500个队伍 负责演讲和展示</li>
+	    <li><strong><a href="https://www.marscode.cn/events/2024-competition" >MarsCode编程赛</a></strong> 初赛第二/决赛第七 4人参与 队长 总共500个队伍 负责演讲和展示</li>
             <li><strong><a href="https://hackru-s23.devpost.com/project-gallery" target="_blank">HackRU黑客松</a></strong> 和世界各地同学参与 模拟新泽西警局POC开发 4人参与 担任展示页面开发</li>
             <li><strong><a href="https://ai.hackberkeley.org/" target="_blank">UCB Hackathon</a></strong> 和硅谷初创公司合作 7人 担任智能体模块开发</li>
         </ul>
@@ -299,28 +330,24 @@
             <span class="skill">QEMU</span>
             <span class="skill">KVM</span>
             <span class="skill">Docker</span>
-            <span class="skill">Kubernetes</span>
             <span class="skill">OpenStack</span>
             <span class="skill">Prometheus</span>
-            <span class="skill">Grafana</span>
-            <span class="skill">Ansible</span>
-            <span class="skill">Terraform</span>
 
             <!-- AI/ML相关 -->
             <span class="skill">PyTorch</span>
             <span class="skill">TensorFlow</span>
+            <span class="skill">MXNet</span>
             <span class="skill">ONNX</span>
             <span class="skill">OpenVINO</span>
-            <span class="skill">MLflow</span>
-            <span class="skill">Ray</span>
-            <span class="skill">HuggingFace</span>
-            <span class="skill">LangChain</span>
+
+            <!-- 图形与计算 -->
+            <span class="skill">OpenGL</span>
+            <span class="skill">Vulkan</span>
+            <span class="skill">CUDA</span>
 
             <!-- 系统编程 -->
             <span class="skill">Rust</span>
-            <span class="skill">C/C++</span>
             <span class="skill">NASM</span>
-            <span class="skill">LLVM</span>
             <span class="skill">GCC</span>
 
             <!-- 分布式系统 -->
@@ -344,7 +371,10 @@
             <!-- 操作系统 -->
             <span class="skill">Linux</span>
             <span class="skill">OpenEuler</span>
-            <span class="skill">RT-Thread</span>
+            <span class="skill">BeOS</span>
+            <span class="skill">HaikuOS</span>
+            <span class="skill">ROS</span>
+
 
             <!-- 开发工具 -->
             <span class="skill">Git</span>
