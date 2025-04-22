@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>poly CV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #5e35b1;
+            --secondary: #3949ab;
+            --dark: #1a237e;
+            --light: #e8eaf6;
+            --text: #212121;
+            --background: #f5f5f5;
+        }
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        .contact {
+            margin-bottom: 20px;
+        }
+        section {
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: var(--secondary);
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 5px;
+            margin-top: 0;
+        }
+        h3 {
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        .job, .project {
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .job:hover, .project:hover {
+            background-color: var(--light);
+            padding-left: 10px;
+            border-left: 3px solid var(--primary);
+        }
+        .date {
+            color: #666;
+            font-style: italic;
+        }
+        .future-date {
+            color: #d81b60;
+            font-weight: bold;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+            transition: all 0.2s ease;
+        }
+        li:hover {
+            color: var(--primary);
+        }
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .skill {
+            background: var(--light);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            transition: all 0.2s ease;
+        }
+        .skill:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .project-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        a:hover {
+            color: var(--dark);
+        }
+        a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        a:hover::after {
+            transform: scaleX(1);
+        }
+        @media (max-width: 600px) {
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-section {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+        
+        /* 新增开发状态标签 */
+        .status {
+            font-size: 0.7em;
+            background: #eceff1;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .status.active {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status.developing {
+            background: #fff8e1;
+            color: #ff8f00;
+        }
+        .status.future {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        /* 媒体提及样式 */
+        .media-mention {
+            border-left: 3px solid #5e35b1;
+            padding-left: 10px;
+            margin: 10px 0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header class="animate__animated animate__fadeInDown">
+        <h1>poly</h1>
+        <div class="contact">
+            ppolitenhammerc@gmail.com | juantan@onionmail.org<br>
+            GitHub: <a href="https://github.com/polypopopo" target="_blank">github.com/polypopopo</a><br>
+	    rednotea <a href="https://www.xiaohongshu.com/user/profile/63462a61000000001901f69d">5463671145 3L</a> <br>
+	    电话 17781419542 <br>
+	    电子科技大学成都学院2025届毕业生(专科)<br>
+	    Telegram: Racine imaginaire, <a href="https://t.me/polypopopo">@polypopopo</a><br>
+            开发环境: Arch Linux & Fedora Server
+
+        </div>
+    </header>
+
+    <section id="work" class="animate-section">
+        <h2>工作经历</h2>
+
+        <div class="job delay-1">
+            <h3><a href="https://www.cduestc.cn/kejichu/init_3080100/index" target="_blank">电子科技大学官网</a> | 全栈开发 <span class="date">2022.11-2023.02</span></h3>
+            <ul>
+                <li>Vue3+Java+thymeleaf+mysql+redis技术栈</li>
+                <li>负责前端样式设计工作，并参与运维</li>
+            </ul>
+        </div>
+
+        <div class="job delay-1">
+            <h3>SmartWallet | 区块链前端开发 <span class="date">2023.06-2023.08</span></h3>
+            <ul>
+                <li>开发多链(Ethereum/Sui)资产看板(React+TypeScript)</li>
+                <li>优化交易签名流程，提升40%交易处理速度</li>
+                <li>实现Redux状态管理优化，减少不必要的重渲染</li>
+            </ul>
+        </div>
+
+        <div class="job delay-2">
+            <h3><a href="https://eulixos.com" target="_blank">中科院软件所</a> | 嵌入式系统研发助理工程师 <span class="date">2024.07-2024.11</span></h3>
+            <ul>
+                <li>开发RISC-V架构AI算子测试框架，减少30%测试用例冗余</li>
+                <li>构建ARM/x86性能热力图对比系统，支持perf事件分析</li>
+                <li>实现4000+行表格录入自动化测试脚本(Pytest+Allure报告)</li>
+                <li>参与解决包括X256,Spark的兼容性难题的讨论</li>
+                <li>参与基于<a href="https://eulixos.com" target="_blank">OpenEuler RISC-V</a>的<a href="https://www.aolaios.com" target="_blank">傲来操作系统</a>商业发行版AI框架测试</li>
+            </ul>
+        </div>
+
+        <div class="job delay-3">
+            <h3><a href="https://qulab.ustc.edu.cn/" target="_blank">中国科学院大学Qulab实验室</a> | 生物数据处理(兼职) <span class="date">2025.3至今</span></h3>
+            <ul>
+                <li>处理生物信息，受学术保密协议约束</li>
+                <li>技术栈为napari以及cellpose</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="projects" class="animate-section delay-1">
+        <h2>开源社区与项目</h2>
+        <h3><a href="https://github.com/OSchengdu" target="_blank">OSChengdu社区</a> (创始人)</h3>
+
+        <div class="project-grid">
+            <div class="project-card delay-1">
+                <h4><a href="https://github.com/Gitlings/gitlings" target="_blank">Gitlings</a> <span class="status developing">开发中</span></h4>
+                <p>Rust实现的Git教学工具</p>
+                <ul>
+                    <li>Git对象可视化系统</li>
+                    <li>20+种错误注入训练场景</li>
+                    <li>三级AI提示系统(llama-index集成)</li>
+                </ul>
+            </div>
+
+            <div class="project-card delay-1">
+                <h4><a href="https://github.com/OSchengdu/SynthIQNexus" target="_blank">SynthNexus</a> <span class="status developing">原型阶段</span></h4>
+                <p>深网搜索引擎</p>
+                <ul>
+                    <li>Tor爬虫集成(stem库)</li>
+                    <li>SQLite-VSS向量搜索</li>
+                    <li>混合语法生成引擎(Dork+SQL)</li>
+                </ul>
+            </div>
+
+
+            <div class="project-card delay-2">
+                <h4>Nasm_k <span class="status developing">内部开发</span></h4>
+                <p>简易操作系统内核</p>
+                <ul>
+                    <li>命令行实现</li>
+                    <li>进程调度</li>
+                    <li>基础文件系统</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>其他社区参与</h3>
+        <ul>
+            <li><strong><a href="https://opencamp.cn" target="_blank">OpenCamp训练营</a></strong>: 担任三个训练营的助教/讲师           
+            <li><strong><a href="https://gosim.org/" target="_blank">GOSIM CHINA</a></strong>: 协助组织技术沙龙，并首邀演讲</li>
+            
+            <li><strong><a href="https://opencamp.cn/gosim/camp/MoFA2025/stage/1" target="_blank">MOFA社区</a></strong>: 
+                <ul>
+                    <li>开发基于知识图谱的购物智能体(比赛三等奖)</li>
+                    <li>接受<a href="https://www.csdn.net/" target="_blank">CSDN</a>资深记者何苗专访，讨论智能体参赛经验</li>
+                    <div class="media-mention">
+                    </div>
+                </ul>
+            </li>
+            
+            <li><strong><a href="https://github.com/HOAC-OS2EDU/HOAC-OS2EDU" target="_blank">HOAC华科开源俱乐部</a></strong>: 参与博客平台开发</li>
+            
+            <li><strong><a href="https://github.com/rustsbi/rustsbi/issues/118" target="_blank">RustSBI</a></strong>: 提交关键补丁(#118)</li>
+        </ul>
+    </section>
+
+    <section id="competitions" class="animate-section delay-2">
+        <h2>社区赛事</h2>
+        <ul>
+            <li><strong><a href="https://opencamp.cn/gosim/camp/MoFA2025/stage/1" target="_blank">MOFA智能体大赛</a></strong> 三等奖 队长 3人参与 负责架构和全栈开发</li>
+	    <li><strong><a href="https://www.marscode.cn/events/2024-competition" >MarsCode编程赛</a></strong> 初赛第二/决赛第七 4人参与 队长 总共500个队伍 负责演讲和展示</li>
+            <li><strong><a href="https://hackru-s23.devpost.com/project-gallery" target="_blank">HackRU黑客松</a></strong> 和世界各地同学参与 模拟新泽西警局POC开发 4人参与 担任展示页面开发</li>
+            <li><strong><a href="https://ai.hackberkeley.org/" target="_blank">UCB Hackathon</a></strong> 和硅谷初创公司合作 7人 担任智能体模块开发</li>
+        </ul>
+    </section>
+
+    <section id="skills" class="animate-section delay-3">
+        <h2>技术栈</h2>
+        <div class="skills">
+            <!-- 基础设施相关 -->
+            <span class="skill">RISC-V</span>
+            <span class="skill">QEMU</span>
+            <span class="skill">KVM</span>
+            <span class="skill">Docker</span>
+            <span class="skill">OpenStack</span>
+            <span class="skill">Prometheus</span>
+
+            <!-- AI/ML相关 -->
+            <span class="skill">PyTorch</span>
+            <span class="skill">TensorFlow</span>
+            <span class="skill">MXNet</span>
+            <span class="skill">ONNX</span>
+            <span class="skill">OpenVINO</span>
+
+            <!-- 图形与计算 -->
+            <span class="skill">OpenGL</span>
+            <span class="skill">Vulkan</span>
+            <span class="skill">CUDA</span>
+
+            <!-- 系统编程 -->
+            <span class="skill">Rust</span>
+            <span class="skill">NASM</span>
+            <span class="skill">GCC</span>
+
+            <!-- 分布式系统 -->
+            <span class="skill">Spark</span>
+            <span class="skill">Hadoop</span>
+            <span class="skill">Kafka</span>
+            <span class="skill">Flink</span>
+
+            <!-- 网络与安全 -->
+            <span class="skill">Tor</span>
+            <span class="skill">VPN</span>
+            <span class="skill">DPDK</span>
+            <span class="skill">eBPF</span>
+
+            <!-- 存储与数据库 -->
+            <span class="skill">SQLite</span>
+            <span class="skill">PostgreSQL</span>
+            <span class="skill">Redis</span>
+            <span class="skill">Ceph</span>
+
+            <!-- 操作系统 -->
+            <span class="skill">Linux</span>
+            <span class="skill">OpenEuler</span>
+            <span class="skill">BeOS</span>
+            <span class="skill">HaikuOS</span>
+            <span class="skill">ROS</span>
+
+
+            <!-- 开发工具 -->
+            <span class="skill">Git</span>
+            <span class="skill">GDB</span>
+            <span class="skill">Perf</span>
+            <span class="skill">strace</span>
+        </div>
+    </section>
+
+    <script>
+        // 滚动动画触发
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.animate-section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                section.style.opacity = 0;
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
