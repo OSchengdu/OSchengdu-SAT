@@ -5,170 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>linmenglite</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <style>
-        :root {
-            --primary: #2C3E50;   
-            --secondary: #34495E;  
-            --dark: #2C3E50;    
-            --light: #F8F9FA;     
-            --text: #495057;       
-            --background: #70f1eb; 
-            --highlight: #3498DB;  
-        }
-        body {
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background: var(--background);
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        h1 {
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        .contact {
-            margin-bottom: 20px;
-            color: var(--text);
-        }
-        section {
-            margin-bottom: 30px;
-            background: var(--light);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        h2 {
-            color: var(--secondary);
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 5px;
-            margin-top: 0;
-        }
-        h3 {
-            color: var(--highlight);
-            margin-bottom: 5px;
-        }
-        .job, .project {
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-        .job:hover, .project:hover {
-            background-color: var(--light);
-            padding-left: 10px;
-            border-left: 3px solid var(--primary);
-        }
-        .date {
-            color: #666666;
-            font-style: italic;
-        }
-        ul {
-            padding-left: 20px;
-        }
-        li {
-            margin-bottom: 5px;
-            transition: all 0.2s ease;
-        }
-        li:hover {
-            color: var(--primary);
-        }
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .skill {
-            background: var(--light);
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.9em;
-            transition: all 0.2s ease;
-            color: var(--text);
-        }
-        .skill:hover {
-            background: var(--primary);
-            color: white;
-            transform: scale(1.05);
-        }
+<style>
+    :root {
+        --primary: #00FF41; /* 矩阵绿 */
+        --secondary: #0D0208; /* 接近黑色 */
+        --dark: #0A0A0A; /* 深黑 */
+        --light: #1A1A1A; /* 浅黑 */
+        --text: #C0C0C0; /* 终端灰 */
+        --background: #000000; /* 纯黑 */
+        --highlight: #9D00FF; /* 霓虹紫 */
+        --cursor: #FFFFFF; /* 光标白 */
+    }
+    body {
+        font-family: 'Courier New', monospace;
+        line-height: 1.6;
+        color: var(--text);
+        background: var(--background);
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        border-left: 1px solid var(--primary);
+        border-right: 1px solid var(--primary);
+    }
+    header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 1px dashed var(--primary);
+        padding-bottom: 20px;
+    }
+    h1 {
+        color: var(--primary);
+        margin-bottom: 5px;
+        text-shadow: 0 0 5px var(--primary);
+    }
+    .contact {
+        margin-bottom: 20px;
+        color: var(--text);
+    }
+    section {
+        margin-bottom: 30px;
+        background: var(--dark);
+        padding: 20px;
+        border-radius: 0;
+        box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid var(--light);
+        position: relative;
+        overflow: hidden;
+    }
+    section:hover {
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        border-color: var(--primary);
+    }
+    section::before {
+        content: ">";
+        position: absolute;
+        left: 5px;
+        top: 5px;
+        color: var(--primary);
+        font-weight: bold;
+    }
+    h2 {
+        color: var(--primary);
+        border-bottom: 1px solid var(--primary);
+        padding-bottom: 5px;
+        margin-top: 0;
+        font-size: 1.3em;
+    }
+    h3 {
+        color: var(--highlight);
+        margin-bottom: 5px;
+        font-size: 1.1em;
+    }
+    .job, .project {
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+        padding-left: 15px;
+        border-left: 1px solid var(--light);
+    }
+    .job:hover, .project:hover {
+        background-color: rgba(0, 255, 65, 0.05);
+        border-left: 1px solid var(--primary);
+    }
+    .date {
+        color: var(--text);
+        font-style: italic;
+    }
+    ul {
+        padding-left: 20px;
+        list-style-type: ">> ";
+    }
+    li {
+        margin-bottom: 8px;
+        transition: all 0.2s ease;
+    }
+    li:hover {
+        color: var(--primary);
+    }
+    .skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .skill {
+        background: var(--light);
+        padding: 5px 10px;
+        border-radius: 0;
+        font-size: 0.9em;
+        transition: all 0.2s ease;
+        color: var(--text);
+        border: 1px solid var(--primary);
+    }
+    .skill:hover {
+        background: var(--primary);
+        color: var(--dark);
+        transform: scale(1.05);
+        box-shadow: 0 0 10px var(--primary);
+    }
+    .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    .project-card {
+        border: 1px solid var(--light);
+        padding: 15px;
+        border-radius: 0;
+        transition: all 0.3s ease;
+        background: var(--dark);
+    }
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        border-color: var(--primary);
+    }
+    a {
+        color: var(--primary);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+    a:hover {
+        color: var(--highlight);
+        text-shadow: 0 0 5px var(--highlight);
+    }
+    a::after {
+        content: '_';
+        position: absolute;
+        color: var(--cursor);
+        animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+        from, to { opacity: 1; }
+        50% { opacity: 0; }
+    }
+    @media (max-width: 600px) {
         .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr;
         }
-        .project-card {
-            border: 1px solid #dddddd;
-            padding: 15px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            background: var(--light);
-        }
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            border-color: var(--primary);
-        }
-        a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-        a:hover {
-            color: var(--highlight);
-        }
-        a::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background-color: var(--primary);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-        a:hover::after {
-            transform: scaleX(1);
-        }
-        @media (max-width: 600px) {
-            .project-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+    }
 
-        /* 动画效果 */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+    /* 终端闪烁光标效果 */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
-        .animate-section {
-            animation: fadeInUp 0.6s ease forwards;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        .delay-1 {
-            animation-delay: 0.1s;
-        }
-        .delay-2 {
-            animation-delay: 0.2s;
-        }
-        .delay-3 {
-            animation-delay: 0.3s;
-        }
-    </style>
+    }
+    .animate-section {
+        animation: fadeInUp 0.6s ease forwards;
+    }
+    .delay-1 {
+        animation-delay: 0.1s;
+    }
+    .delay-2 {
+        animation-delay: 0.2s;
+    }
+    .delay-3 {
+        animation-delay: 0.3s;
+    }
+    
+    /* 终端输入效果 */
+    .typing {
+        border-right: 2px solid var(--primary);
+        animation: blink-caret 0.75s step-end infinite;
+    }
+    @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: var(--primary); }
+    }
+</style>
 </head>
 <body>
     <header class="animate__animated animate__fadeInDown">

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,8 +47,14 @@
             z-index: 5;
         }
 
-        .interactive:hover {
+        /* 添加 SVG 悬停特效 */
+        .interactive svg {
+            transition: all 0.3s;
+        }
+
+        .interactive:hover svg {
             filter: drop-shadow(0 0 5px rgba(156, 39, 176, 0.8));
+            transform: scale(1.1);
         }
 
         /* Arcade Machine */
@@ -196,9 +203,17 @@
         }
 
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-20px); }
-            60% { transform: translateX(-50%) translateY(-10px); }
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
         }
 
         /* Easter egg styles */
@@ -225,25 +240,68 @@
                 width: 10vw !important;
                 height: 10vh !important;
             }
-            
+
             #arcade1 {
                 bottom: 5%;
                 left: 25%;
             }
-            
-            #arcade2, #arcade3 {
+
+            #arcade2,
+            #arcade3 {
                 bottom: 10%;
                 width: 6vw !important;
                 height: 8vh !important;
             }
         }
+
+        /* 新增：简历模态框样式 */
+        #resume-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #resume-modal .modal-content {
+            background-color: #111;
+            border: 4px solid #FF7F00;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #9C27B0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        /* 美化简历链接样式 */
+        .resume-link {
+            display: block;
+            color: #FF7F00;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .resume-link:hover {
+            color: #E64A19;
+            text-decoration: underline;
+        }
     </style>
 </head>
+
 <body>
     <div id="scene">
         <div id="background-container">
             <div id="background"></div>
-            
+
             <!-- Interactive elements using SVG backgrounds -->
             <div class="interactive" id="arcade1" title="Main Arcade Terminal"></div>
             <div class="interactive" id="arcade2" title="Docker Terminal 1"></div>
@@ -251,7 +309,7 @@
             <div class="interactive" id="radio" title="Music Switch"></div>
             <div class="interactive" id="safe" title="Stack Overflow Safe"></div>
         </div>
-        
+
         <div id="content">
             <h1>OSchengdu</h1>
         </div>
@@ -267,6 +325,12 @@
             <p>$ Type 'help' for available commands</p>
             <div id="terminal-output"></div>
             <input type="text" id="terminal-input" placeholder="$ " autofocus>
+            <!-- 新增：快速命令按钮 -->
+            <button onclick="executeCommand('help')">Help</button>
+            <button onclick="executeCommand('about')">About</button>
+            <button onclick="executeCommand('contact')">Contact</button>
+            <!-- 新增：简历按钮 -->
+            <button onclick="openResumeModal()">Resume</button>
         </div>
     </div>
 
@@ -298,6 +362,19 @@
         <button id="close-easter-egg">Continue</button>
     </div>
 
+    <!-- 新增：简历模态框 -->
+    <div id="resume-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Resume Links</h2>
+            <a href="helian_CV.html" class="resume-link">helian's Resume</a>
+            <a href="lin_CV.html" class="resume-link">lin's Resume</a>
+            <a href="poly_CV.html" class="resume-link">poly's Resume</a>
+            <a href="onlyfast_CV.html" class="resume-link">onlyfast's Resume</a>
+            <a href="THINKER_ONLY_CV.html" class="resume-link">THINKER_ONLY's Resume</a>
+        </div>
+    </div>
+
     <audio id="bgm" loop>
         <source src="assets/bgm.mp3" type="audio/mpeg">
     </audio>
@@ -307,28 +384,30 @@
         const bgContainer = document.getElementById('background-container');
         const bg = document.getElementById('background');
         const interactiveElements = document.querySelectorAll('.interactive');
-        
+
         // Modal elements
         const terminalModal = document.getElementById('terminal-modal');
         const radioModal = document.getElementById('radio-modal');
         const safeModal = document.getElementById('safe-modal');
         const easterEgg = document.getElementById('easter-egg');
-        
+        // 新增：简历模态框元素
+        const resumeModal = document.getElementById('resume-modal');
+
         // Audio element
         const bgm = document.getElementById('bgm');
-        
+
         // Terminal elements
         const terminalOutput = document.getElementById('terminal-output');
         const terminalInput = document.getElementById('terminal-input');
-        
+
         // Safe elements
         const safeCodeInput = document.getElementById('safe-code');
         const safeContent = document.getElementById('safe-content');
         const safeSubmit = document.getElementById('safe-submit');
-        
+
         // Close buttons
         const closeButtons = document.querySelectorAll('.close-modal, #close-easter-egg');
-        
+
         // Calculate background size
         function resizeBackground() {
             const aspectRatio = 7680 / 2160;
@@ -341,20 +420,20 @@
 
             // Position interactive elements based on background size
             positionInteractiveElements(requiredWidth, viewportHeight);
-            
+
             scrollBackground(requiredWidth / 2 - window.innerWidth / 2);
         }
-        
+
         // Position interactive elements proportionally
         function positionInteractiveElements(bgWidth, bgHeight) {
             // These positions should match your CSS positions but in percentage
             const elements = [
-                { id: 'arcade1', x: 0.03, y: 0.1, width: 0.1, height: 0.32},
+                { id: 'arcade1', x: 0.03, y: 0.1, width: 0.1, height: 0.32 },
                 { id: 'arcade2', x: 0.78, y: 0.3, width: 0.08, height: 0.27 },
                 { id: 'radio', x: 0.47, y: 0.31, width: 0.018, height: 0.07 },
                 { id: 'safe', x: 0.26, y: 0.34, width: 0.08, height: 0.2 },
             ];
-            
+
             elements.forEach(el => {
                 const element = document.getElementById(el.id);
                 if (element) {
@@ -365,7 +444,7 @@
                 }
             });
         }
-        
+
         // Background scrolling logic
         let isDragging = false;
         let startX;
@@ -434,7 +513,7 @@
         document.getElementById('arcade1').addEventListener('click', (e) => {
             e.stopPropagation();
             arcade1Clicks++;
-            
+
             if (arcade1Clicks >= 2) {
                 // Easter egg - secret boss
                 easterEgg.style.display = 'flex';
@@ -442,7 +521,7 @@
                 terminalModal.style.display = 'flex';
                 terminalInput.focus();
             }
-            
+
             setTimeout(() => {
                 if (arcade1Clicks < 2) arcade1Clicks = 0;
             }, 1000);
@@ -493,16 +572,20 @@
                 radioModal.style.display = 'none';
                 safeModal.style.display = 'none';
                 easterEgg.style.display = 'none';
+                // 新增：关闭简历模态框
+                resumeModal.style.display = 'none';
             });
         });
 
         // Close modals when clicking outside
         window.addEventListener('click', (e) => {
-            if (e.target === terminalModal || e.target === radioModal || e.target === safeModal || e.target === easterEgg) {
+            if (e.target === terminalModal || e.target === radioModal || e.target === safeModal || e.target === easterEgg || e.target === resumeModal) {
                 terminalModal.style.display = 'none';
                 radioModal.style.display = 'none';
                 safeModal.style.display = 'none';
                 easterEgg.style.display = 'none';
+                // 新增：关闭简历模态框
+                resumeModal.style.display = 'none';
             }
         });
 
@@ -511,22 +594,36 @@
             if (e.key === 'Enter') {
                 const command = terminalInput.value.trim();
                 terminalInput.value = '';
-                
+
                 // Add command to output
                 const commandElement = document.createElement('p');
                 commandElement.textContent = `$ ${command}`;
                 terminalOutput.appendChild(commandElement);
-                
+
                 // Process command
                 const response = processTerminalCommand(command);
                 const responseElement = document.createElement('p');
                 responseElement.textContent = response;
                 terminalOutput.appendChild(responseElement);
-                
+
                 // Scroll to bottom
                 terminalOutput.scrollTop = terminalOutput.scrollHeight;
             }
         });
+
+        // 新增：执行快速命令函数
+        function executeCommand(command) {
+            const commandElement = document.createElement('p');
+            commandElement.textContent = `$ ${command}`;
+            terminalOutput.appendChild(commandElement);
+
+            const response = processTerminalCommand(command);
+            const responseElement = document.createElement('p');
+            responseElement.textContent = response;
+            terminalOutput.appendChild(responseElement);
+
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
 
         function processTerminalCommand(command) {
             const commands = {
@@ -534,11 +631,14 @@
                 'about': 'OSchengdu is a pixel-art inspired tech blog and portfolio.',
                 'contact': 'Email: contact@oschengdu.com',
                 'blog': 'Opening blog section...',
-                'clear': () => { terminalOutput.innerHTML = ''; return ''; },
+                'clear': () => {
+                    terminalOutput.innerHTML = '';
+                    return '';
+                },
                 'docker run -it ubuntu': 'Running Ubuntu container...\nroot@container:/#',
                 'docker ps': 'CONTAINER ID   IMAGE    COMMAND   CREATED   STATUS   PORTS   NAMES'
             };
-            
+
             if (commands[command]) {
                 return typeof commands[command] === 'function' ? commands[command]() : commands[command];
             } else {
@@ -566,17 +666,22 @@
             }
         });
 
+        // 新增：打开简历模态框函数
+        function openResumeModal() {
+            resumeModal.style.display = 'flex';
+        }
+
         // Initialize
         window.addEventListener('load', () => {
             resizeBackground();
-            
+
             // Set theme color variable
             document.body.style.setProperty('--theme-color', '#FF7F00');
-            
+
             // Try to autoplay music (may be blocked by browser)
             bgm.volume = 0.3;
             const playPromise = bgm.play();
-            
+
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
                     console.log('Autoplay prevented:', error);
@@ -590,4 +695,6 @@
         });
     </script>
 </body>
+
 </html>
+
