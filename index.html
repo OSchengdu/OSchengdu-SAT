@@ -12,7 +12,6 @@
             overflow: hidden;
             background-color: #000;
             font-family: 'Courier New', monospace;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect x="0" y="0" width="16" height="16" fill="%23FF7F00"/><rect x="2" y="2" width="12" height="12" fill="%239C27B0"/></svg>'), auto;
         }
 
         #scene {
@@ -42,7 +41,7 @@
         /* Interactive elements */
         .interactive {
             position: absolute;
-            cursor: pointer;
+            cursor: url('assets/arrow.png') 8 8, pointer;
             transition: all 0.3s;
             z-index: 5;
         }
@@ -55,6 +54,83 @@
         .interactive:hover svg {
             filter: drop-shadow(0 0 5px rgba(156, 39, 176, 0.8));
             transform: scale(1.1);
+        }
+
+        /* 添加按钮悬停样式 */
+        button {
+            position: relative;
+            overflow: hidden;
+            padding: 8px 16px;
+            border: 2px solid #FF7F00;
+            background: #111;
+            color: #FF7F00;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+            font-family: 'Press Start 2P', monospace;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            image-rendering: pixelated;
+        }
+
+        button:hover {
+            background: #FF7F00;
+            color: #111;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 127, 0, 0.4);
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: #9C27B0;
+            transition: width 0.3s ease-in-out;
+        }
+
+        button:hover::before {
+            width: 100%;
+        }
+
+        /* 添加进入动画 */
+        .modal {
+            animation: modalFadeIn 0.5s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-content {
+            position: relative;
+        }
+
+        .modal-content::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(to right, #FF7F00, #9C27B0);
+            animation: loadingBar 1s ease-out forwards;
+        }
+
+        @keyframes loadingBar {
+            to {
+                width: 100%;
+            }
         }
 
         /* Arcade Machine */
@@ -120,48 +196,94 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.95);
             z-index: 100;
             justify-content: center;
             align-items: center;
         }
 
-        .modal-content {
-            background-color: #111;
-            border: 4px solid #FF7F00;
-            padding: 20px;
-            width: 80%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-            color: #9C27B0;
-            font-family: 'Courier New', monospace;
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #FF7F00;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        /* Terminal style */
+        /* 新增：终端样式 */
         .terminal {
+            width: 100%;
+            height: 100%;
             background-color: #000;
             color: #0F0;
+            font-family: 'Press Start 2P', monospace;
             padding: 20px;
-            font-family: monospace;
-            border: 2px solid #FF7F00;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
+            image-rendering: pixelated;
+            border: 4px solid #0F0;
         }
 
-        /* Pixel art elements */
-        .pixel-art {
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 0, 0.1),
+                rgba(0, 255, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+        }
+
+        #terminal-output {
+            height: calc(100% - 60px);
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+            line-height: 1.5;
+            text-shadow: 0 0 5px #0F0;
+        }
+
+        #terminal-input {
+            width: calc(100% - 20px);
+            background: transparent;
+            border: none;
+            color: #0F0;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 16px;
+            padding: 10px;
+            outline: none;
+            text-shadow: 0 0 5px #0F0;
+        }
+
+        #terminal-input::placeholder {
+            color: rgba(0, 255, 0, 0.5);
+        }
+
+        /* Scan line effect */
+        @keyframes scanline {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        .terminal::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 255, 0, 0.2),
+                transparent
+            );
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
         }
 
         /* Content header */
@@ -252,6 +374,15 @@
                 width: 6vw !important;
                 height: 8vh !important;
             }
+
+            .terminal {
+                font-size: 14px;
+            }
+
+            .terminal-buttons button {
+                font-size: 10px;
+                padding: 3px 6px;
+            }
         }
 
         /* 新增：简历模态框样式 */
@@ -287,12 +418,92 @@
             color: #FF7F00;
             text-decoration: none;
             margin-bottom: 10px;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            position: relative;
+            padding: 5px 10px;
         }
 
         .resume-link:hover {
             color: #E64A19;
             text-decoration: underline;
+            transform: translateX(10px);
+            background: rgba(255, 127, 0, 0.1);
+        }
+
+        .resume-link::before {
+            content: '>';
+            position: absolute;
+            left: -10px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .resume-link:hover::before {
+            left: 0;
+            opacity: 1;
+        }
+
+        /* 新增：日志模态框样式 */
+        #log-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #log-modal .modal-content {
+            background-color: #111;
+            border: 4px solid #FF7F00;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #0F0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        #log-content {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            color: #0F0;
+            border: 2px solid #0F0;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+
+        #password-input {
+            background: #000;
+            color: #0F0;
+            border: 2px solid #0F0;
+            padding: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .log-button {
+            background: #000;
+            color: #0F0;
+            border: 2px solid #0F0;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+        }
+
+        .log-button:hover {
+            background: #0F0;
+            color: #000;
         }
     </style>
 </head>
@@ -304,8 +515,8 @@
 
             <!-- Interactive elements using SVG backgrounds -->
             <div class="interactive" id="arcade1" title="Main Arcade Terminal"></div>
-            <div class="interactive" id="arcade2" title="Docker Terminal 1"></div>
-            <div class="interactive" id="arcade3" title="Docker Terminal 2"></div>
+            <div class="interactive" id="arcade2" title="Log Terminal"></div>
+            <div class="interactive" id="arcade3" title="Terminal"></div>
             <div class="interactive" id="radio" title="Music Switch"></div>
             <div class="interactive" id="safe" title="Stack Overflow Safe"></div>
         </div>
@@ -318,41 +529,29 @@
 
     <!-- Modals for interactive elements -->
     <div id="terminal-modal" class="modal">
-        <div class="modal-content terminal">
-            <span class="close-modal">&times;</span>
-            <h2>OSchengdu</h2>
-            <p>$ Welcome to the OSchengdu terminal!</p>
-            <p>$ Type 'help' for available commands</p>
-            <div id="terminal-output"></div>
+        <div class="terminal">
+            <div id="terminal-output">
+                <p>Welcome to OSchengdu Terminal v1.0</p>
+                <p>Type 'help' for available commands</p>
+            </div>
             <input type="text" id="terminal-input" placeholder="$ " autofocus>
-            <!-- 新增：快速命令按钮 -->
-            <button onclick="executeCommand('help')">Help</button>
-            <button onclick="executeCommand('about')">About</button>
-            <button onclick="executeCommand('contact')">Contact</button>
-            <!-- 新增：简历按钮 -->
-            <button onclick="openResumeModal()">Resume</button>
         </div>
     </div>
 
     <div id="radio-modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
             <h2>Music Control</h2>
             <button id="bgm-toggle">Toggle Background Music</button>
         </div>
     </div>
 
-    <div id="safe-modal" class="modal">
+    <!-- 新增：日志模态框 -->
+    <div id="log-modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Stack Overflow Safe</h2>
-            <p>Enter the secret code:</p>
-            <input type="password" id="safe-code" placeholder="****">
-            <button id="safe-submit">Submit</button>
-            <div id="safe-content" style="display: none; margin-top: 20px;">
-                <h3>Website Source Code</h3>
-                <pre id="source-code"></pre>
-            </div>
+            <h2>Log Terminal</h2>
+            <input type="password" id="password-input" placeholder="Enter password">
+            <textarea id="log-content" readonly></textarea>
+            <button class="log-button" id="save-log">Save Changes</button>
         </div>
     </div>
 
@@ -365,7 +564,6 @@
     <!-- 新增：简历模态框 -->
     <div id="resume-modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
             <h2>Resume Links</h2>
             <a href="helian_CV.html" class="resume-link">helian's Resume</a>
             <a href="lin_CV.html" class="resume-link">lin's Resume</a>
@@ -390,8 +588,13 @@
         const radioModal = document.getElementById('radio-modal');
         const safeModal = document.getElementById('safe-modal');
         const easterEgg = document.getElementById('easter-egg');
-        // 新增：简历模态框元素
         const resumeModal = document.getElementById('resume-modal');
+        const logModal = document.getElementById('log-modal');
+
+        // Log elements
+        const passwordInput = document.getElementById('password-input');
+        const logContent = document.getElementById('log-content');
+        const saveLogButton = document.getElementById('save-log');
 
         // Audio element
         const bgm = document.getElementById('bgm');
@@ -404,9 +607,6 @@
         const safeCodeInput = document.getElementById('safe-code');
         const safeContent = document.getElementById('safe-content');
         const safeSubmit = document.getElementById('safe-submit');
-
-        // Close buttons
-        const closeButtons = document.querySelectorAll('.close-modal, #close-easter-egg');
 
         // Calculate background size
         function resizeBackground() {
@@ -429,7 +629,8 @@
             // These positions should match your CSS positions but in percentage
             const elements = [
                 { id: 'arcade1', x: 0.03, y: 0.1, width: 0.1, height: 0.32 },
-                { id: 'arcade2', x: 0.78, y: 0.3, width: 0.08, height: 0.27 },
+                { id: 'arcade2', x: 0.65, y: 0.15, width: 0.08, height: 0.15 },
+                { id: 'arcade3', x: 0.78, y: 0.3, width: 0.08, height: 0.27 },
                 { id: 'radio', x: 0.47, y: 0.31, width: 0.018, height: 0.07 },
                 { id: 'safe', x: 0.26, y: 0.34, width: 0.08, height: 0.2 },
             ];
@@ -527,17 +728,22 @@
             }, 1000);
         });
 
+        // 新增：arcade2点击处理
         document.getElementById('arcade2').addEventListener('click', (e) => {
             e.stopPropagation();
-            terminalModal.style.display = 'flex';
-            terminalInput.value = 'docker run -it ubuntu';
-            terminalInput.focus();
+            logModal.style.display = 'flex';
+            passwordInput.focus();
+            
+            // 从localStorage加载日志内容
+            const savedLog = localStorage.getItem('arcade-log');
+            if (savedLog) {
+                logContent.value = savedLog;
+            }
         });
 
         document.getElementById('arcade3').addEventListener('click', (e) => {
             e.stopPropagation();
             terminalModal.style.display = 'flex';
-            terminalInput.value = 'docker ps';
             terminalInput.focus();
         });
 
@@ -552,6 +758,25 @@
             safeCodeInput.focus();
         });
 
+        // 新增：密码输入处理
+        passwordInput.addEventListener('input', () => {
+            if (passwordInput.value === '1337') {
+                logContent.removeAttribute('readonly');
+                saveLogButton.style.display = 'block';
+            } else {
+                logContent.setAttribute('readonly', true);
+                saveLogButton.style.display = 'none';
+            }
+        });
+
+        // 新增：保存日志
+        saveLogButton.addEventListener('click', () => {
+            if (passwordInput.value === '1337') {
+                localStorage.setItem('arcade-log', logContent.value);
+                alert('Log saved successfully!');
+            }
+        });
+
         document.querySelectorAll('.light').forEach(light => {
             light.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -564,28 +789,19 @@
             });
         });
 
-        // Close modals
-        closeButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                terminalModal.style.display = 'none';
-                radioModal.style.display = 'none';
-                safeModal.style.display = 'none';
-                easterEgg.style.display = 'none';
-                // 新增：关闭简历模态框
-                resumeModal.style.display = 'none';
-            });
-        });
-
         // Close modals when clicking outside
         window.addEventListener('click', (e) => {
-            if (e.target === terminalModal || e.target === radioModal || e.target === safeModal || e.target === easterEgg || e.target === resumeModal) {
-                terminalModal.style.display = 'none';
+            if (e.target === radioModal || e.target === safeModal || e.target === easterEgg || e.target === resumeModal || e.target === logModal) {
                 radioModal.style.display = 'none';
                 safeModal.style.display = 'none';
                 easterEgg.style.display = 'none';
-                // 新增：关闭简历模态框
                 resumeModal.style.display = 'none';
+                logModal.style.display = 'none';
+                
+                // Reset password input and log content readonly state
+                passwordInput.value = '';
+                logContent.setAttribute('readonly', true);
+                saveLogButton.style.display = 'none';
             }
         });
 
@@ -611,33 +827,31 @@
             }
         });
 
-        // 新增：执行快速命令函数
-        function executeCommand(command) {
-            const commandElement = document.createElement('p');
-            commandElement.textContent = `$ ${command}`;
-            terminalOutput.appendChild(commandElement);
-
-            const response = processTerminalCommand(command);
-            const responseElement = document.createElement('p');
-            responseElement.textContent = response;
-            terminalOutput.appendChild(responseElement);
-
-            terminalOutput.scrollTop = terminalOutput.scrollHeight;
-        }
-
         function processTerminalCommand(command) {
             const commands = {
-                'help': 'Available commands: help, about, contact, blog, clear',
-                'about': 'OSchengdu is a pixel-art inspired tech blog and portfolio.',
-                'contact': 'Email: contact@oschengdu.com',
-                'blog': 'Opening blog section...',
+                'help': 'Available commands:\n- resume: List all available resumes\n- resume <filename>: Open specific resume\n- clear: Clear terminal\n- exit: Exit terminal',
                 'clear': () => {
                     terminalOutput.innerHTML = '';
                     return '';
                 },
-                'docker run -it ubuntu': 'Running Ubuntu container...\nroot@container:/#',
-                'docker ps': 'CONTAINER ID   IMAGE    COMMAND   CREATED   STATUS   PORTS   NAMES'
+                'exit': () => {
+                    terminalModal.style.display = 'none';
+                    return '';
+                }
             };
+
+            if (command === 'resume') {
+                return 'Available resumes:\n- helian_CV.html\n- lin_CV.html\n- poly_CV.html\n- onlyfast_CV.html\n- THINKER_ONLY_CV.html\n\nUse "resume <filename>" to open a specific resume';
+            } else if (command.startsWith('resume ')) {
+                const filename = command.split(' ')[1];
+                const validResumes = ['helian_CV.html', 'lin_CV.html', 'poly_CV.html', 'onlyfast_CV.html', 'THINKER_ONLY_CV.html'];
+                if (validResumes.includes(filename)) {
+                    window.location.href = filename;
+                    return `Opening ${filename}...`;
+                } else {
+                    return `Error: Resume "${filename}" not found. Use "resume" to see available resumes.`;
+                }
+            }
 
             if (commands[command]) {
                 return typeof commands[command] === 'function' ? commands[command]() : commands[command];
@@ -647,16 +861,6 @@
         }
 
         // Safe functionality
-        safeSubmit.addEventListener('click', () => {
-            if (safeCodeInput.value === '1337') { // Stack Overflow easter egg code
-                safeContent.style.display = 'block';
-                // Load all text content (simplified for demo)
-                document.getElementById('source-code').textContent = document.documentElement.outerHTML;
-            } else {
-                alert('Incorrect code! Try again.');
-            }
-        });
-
         // BGM toggle
         document.getElementById('bgm-toggle').addEventListener('click', () => {
             if (bgm.paused) {
@@ -665,11 +869,6 @@
                 bgm.pause();
             }
         });
-
-        // 新增：打开简历模态框函数
-        function openResumeModal() {
-            resumeModal.style.display = 'flex';
-        }
 
         // Initialize
         window.addEventListener('load', () => {
@@ -687,6 +886,9 @@
                     console.log('Autoplay prevented:', error);
                 });
             }
+
+            // 初始化日志按钮状态
+            saveLogButton.style.display = 'none';
         });
 
         window.addEventListener('resize', () => {
@@ -697,4 +899,3 @@
 </body>
 
 </html>
-
