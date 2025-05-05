@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>建筑设计师风格的美术简历</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2a3a4a;
+      --secondary-color: #5d7b94;
+      --accent-color: #e8b274;
+      --light-color: #f5f5f5;
+      --dark-color: #1a1a1a;
+      --section-gap: 60px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.7;
+      color: var(--dark-color);
+      background-color: var(--light-color);
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* 建筑风格装饰元素 */
+    .blueprint-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(42, 58, 74, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(42, 58, 74, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    /* 标题样式 */
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--accent-color);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    h1.in-view::after {
+      transform: scaleX(1);
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      margin: var(--section-gap) 0 30px;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 3px;
+      background: var(--accent-color);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      margin: 25px 0 15px;
+      color: var(--secondary-color);
+    }
+
+    /* 头部区域 */
+    header {
+      padding: 80px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .title-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .title-line {
+      flex-grow: 1;
+      height: 2px;
+      background: var(--accent-color);
+      margin-left: 20px;
+    }
+
+    .profession {
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--secondary-color);
+      margin-bottom: 10px;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .contact-icon {
+      margin-right: 10px;
+      color: var(--accent-color);
+    }
+
+    /* 主要内容区域 */
+    section {
+      margin-bottom: var(--section-gap);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    section.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-content {
+      background: white;
+      padding: 30px;
+      border-radius: 4px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--accent-color);
+    }
+
+    /* 列表样式 */
+    ul {
+      list-style: none;
+    }
+
+    li {
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 12px;
+    }
+
+    li::before {
+      content: '■';
+      position: absolute;
+      left: 0;
+      color: var(--accent-color);
+      font-size: 0.8em;
+    }
+
+    /* 技能标签 */
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .skill-tag {
+      background: var(--primary-color);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .skill-tag:hover {
+      background: var(--accent-color);
+      transform: translateY(-3px);
+    }
+
+    /* 项目展示 */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .project-image {
+      height: 200px;
+      background: var(--secondary-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-image::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(42, 58, 74, 0.8) 0%, rgba(93, 123, 148, 0.6) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover .project-image::after {
+      opacity: 1;
+    }
+
+    .project-info {
+      padding: 20px;
+    }
+
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    /* 页脚 */
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      margin-top: 60px;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      h2 {
+        font-size: 1.8rem;
+      }
+      
+      .contact-info {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 动画 */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="blueprint-grid"></div>
+
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <div class="title-container">
+          <h1 id="main-title">[你的姓名]</h1>
+          <div class="title-line"></div>
+        </div>
+        <div class="profession">开源团队美术设计师 / 建筑设计师</div>
+        <p>将建筑设计的精确思维与艺术创造力相结合，为开源项目打造独特的视觉语言。</p>
+        
+        <div class="contact-info">
+          <div class="contact-item">
+            <span class="contact-icon">📱</span>
+            <span>[你的联系方式]</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">✉️</span>
+            <span>[你的邮箱]</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">🌐</span>
+            <span>[你的网站/作品集链接]</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="about">
+        <h2>关于我</h2>
+        <div class="section-content">
+          <p>作为一名具有建筑背景的美术设计师，我擅长将结构思维与视觉美学相结合。在开源社区中，我致力于创造既实用又具有艺术价值的设计解决方案，注重细节与用户体验的完美平衡。</p>
+          <p>我的建筑学训练使我具备了独特的空间感知能力和对比例、结构的敏锐洞察力，这些能力直接转化为了我的设计工作中对布局、层次和视觉流动的精确把控。</p>
+        </div>
+      </section>
+
+      <section id="skills">
+        <h2>技能与专长</h2>
+        <div class="section-content">
+          <h3>设计技能</h3>
+          <ul>
+            <li>将建筑设计原理应用于UI/UX设计，创造具有空间感的界面布局</li>
+            <li>运用建筑制图技巧创建精确的矢量图形和图标</li>
+            <li>将建筑渲染技术转化为数字艺术创作</li>
+            <li>使用建筑模型思维构建3D视觉元素</li>
+          </ul>
+          
+          <h3>技术能力</h3>
+          <div class="skills-container">
+            <div class="skill-tag">Adobe Creative Suite</div>
+            <div class="skill-tag">Figma</div>
+            <div class="skill-tag">Blender</div>
+            <div class="skill-tag">SketchUp</div>
+            <div class="skill-tag">AutoCAD</div>
+            <div class="skill-tag">Inkscape</div>
+            <div class="skill-tag">GIMP</div>
+            <div class="skill-tag">Git/GitHub</div>
+            <div class="skill-tag">HTML/CSS</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience">
+        <h2>开源项目经验</h2>
+        <div class="section-content">
+          <h3>主要贡献</h3>
+          <ul>
+            <li><strong>项目LOGO与品牌设计</strong> - 为3个开源项目创建了完整的视觉识别系统，包括响应式LOGO、配色方案和排版指南</li>
+            <li><strong>UI/UX优化</strong> - 重新设计了2个开源软件的界面，改善了用户体验和可访问性</li>
+            <li><strong>文档可视化</strong> - 为技术文档创建了系列示意图和图表，使复杂概念更易理解</li>
+            <li><strong>宣传材料</strong> - 制作社交媒体图形、活动海报和演示模板</li>
+          </ul>
+          
+          <h3>特色项目</h3>
+          <div class="projects-grid">
+            <div class="project-card floating">
+              <div class="project-image" style="background: #5d7b94;"></div>
+              <div class="project-info">
+                <h4 class="project-title">开源建筑可视化工具</h4>
+                <p>设计了整套UI和图标系统，将复杂功能可视化</p>
+              </div>
+            </div>
+            <div class="project-card floating" style="animation-delay: 0.5s;">
+              <div class="project-image" style="background: #e8b274;"></div>
+              <div class="project-info">
+                <h4 class="project-title">开发者社区品牌重塑</h4>
+                <p>创建了现代、专业的视觉形象，提升了社区认知度</p>
+              </div>
+            </div>
+            <div class="project-card floating" style="animation-delay: 1s;">
+              <div class="project-image" style="background: #2a3a4a;"></div>
+              <div class="project-info">
+                <h4 class="project-title">技术文档插图</h4>
+                <p>将抽象概念转化为直观的视觉解释</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="education">
+        <h2>教育背景</h2>
+        <div class="section-content">
+          <h3>建筑设计学士</h3>
+          <p>[大学名称], [毕业年份]</p>
+          <p>主修建筑设计，辅修数字媒体艺术。毕业论文探讨了数字工具在建筑设计可视化中的应用。</p>
+          
+          <h3>相关培训</h3>
+          <ul>
+            <li>UI/UX设计专业证书 - [机构名称], [年份]</li>
+            <li>开源设计协作工作坊 - [活动名称], [年份]</li>
+            <li>数字艺术创作高级课程 - [平台名称], [年份]</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="philosophy">
+        <h2>设计理念</h2>
+        <div class="section-content">
+          <p>"好的设计如同优秀的建筑，不仅要有美观的外表，更要有合理的结构和实用的功能。"</p>
+          <p>我将建筑设计的三大原则——坚固、实用、美观——应用到数字设计中：</p>
+          <ul>
+            <li><strong>坚固</strong> - 创建经得起时间考验的设计系统</li>
+            <li><strong>实用</strong> - 确保设计服务于功能和用户体验</li>
+            <li><strong>美观</strong> - 追求视觉上的和谐与情感共鸣</li>
+          </ul>
+          <p>在开源项目中，我特别注重设计的可扩展性和协作性，确保其他贡献者能够轻松理解和扩展我的工作。</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© [年份] [你的姓名] - 建筑设计师转型的美术设计师</p>
+      <p>感谢您花时间了解我的工作，期待为您的开源项目贡献设计力量。</p>
+    </footer>
+  </div>
+
+  <script>
+    // 滚动动画
+    document.addEventListener('DOMContentLoaded', function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            
+            // 特别处理主标题的下划线动画
+            if (entry.target.id === 'main-title') {
+              setTimeout(() => {
+                entry.target.classList.add('in-view');
+              }, 300);
+            }
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      // 观察所有section和h1
+      document.querySelectorAll('section, h1').forEach(el => {
+        observer.observe(el);
+      });
+
+      // 浮动动画延迟设置
+      const floatingElements = document.querySelectorAll('.floating');
+      floatingElements.forEach((el, index) => {
+        el.style.animationDelay = `${index * 0.2}s`;
+      });
+    });
+  </script>
+</body>
+
+</html>
