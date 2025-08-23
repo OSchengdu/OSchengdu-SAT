@@ -38,7 +38,6 @@
             background-repeat: no-repeat;
         }
 
-        /* Interactive elements */
         .interactive {
             position: absolute;
             cursor: url('assets/arrow.png') 8 8, pointer;
@@ -46,7 +45,6 @@
             z-index: 5;
         }
 
-        /* 添加 SVG 悬停特效 */
         .interactive svg {
             transition: all 0.3s;
         }
@@ -56,7 +54,6 @@
             transform: scale(1.1);
         }
 
-        /* 添加按钮悬停样式 */
         button {
             position: relative;
             overflow: hidden;
@@ -96,7 +93,6 @@
             width: 100%;
         }
 
-        /* 添加进入动画 */
         .modal {
             animation: modalFadeIn 0.5s ease-out;
         }
@@ -133,7 +129,6 @@
             }
         }
 
-        /* Arcade Machine */
         #arcade1 {
             bottom: 10%;
             left: 30%;
@@ -141,7 +136,6 @@
             height: 25vh;
         }
 
-        /* Small Arcades */
         #arcade2 {
             bottom: 15%;
             left: 65%;
@@ -156,7 +150,6 @@
             height: 15vh;
         }
 
-        /* Radio */
         #radio {
             bottom: 25%;
             left: 85%;
@@ -164,7 +157,6 @@
             height: 8vh;
         }
 
-        /* Safe */
         #safe {
             bottom: 20%;
             left: 10%;
@@ -172,7 +164,6 @@
             height: 12vh;
         }
 
-        /* Lights */
         .light {
             width: 3vw;
             height: 3vh;
@@ -188,7 +179,6 @@
             left: 80%;
         }
 
-        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -196,13 +186,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
             z-index: 100;
             justify-content: center;
             align-items: center;
         }
 
-        /* 新增：终端样式 */
         .terminal {
             width: 100%;
             height: 100%;
@@ -260,7 +248,6 @@
             color: rgba(0, 255, 0, 0.5);
         }
 
-        /* Scan line effect */
         @keyframes scanline {
             0% {
                 transform: translateY(0);
@@ -286,7 +273,6 @@
             pointer-events: none;
         }
 
-        /* Content header */
         #content {
             position: absolute;
             top: 0;
@@ -338,7 +324,6 @@
             }
         }
 
-        /* Easter egg styles */
         #easter-egg {
             display: none;
             position: fixed;
@@ -356,7 +341,6 @@
             text-align: center;
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .interactive {
                 width: 10vw !important;
@@ -385,7 +369,6 @@
             }
         }
 
-        /* 新增：简历模态框样式 */
         #resume-modal {
             display: none;
             position: fixed;
@@ -412,7 +395,6 @@
             position: relative;
         }
 
-        /* 美化简历链接样式 */
         .resume-link {
             display: block;
             color: #FF7F00;
@@ -443,7 +425,6 @@
             opacity: 1;
         }
 
-        /* 新增：日志模态框样式 */
         #log-modal {
             display: none;
             position: fixed;
@@ -458,7 +439,6 @@
         }
 
         #log-modal .modal-content {
-            background-color: #111;
             border: 4px solid #FF7F00;
             padding: 20px;
             width: 80%;
@@ -468,6 +448,10 @@
             color: #0F0;
             font-family: 'Courier New', monospace;
             position: relative;
+        }
+
+        .modal-content {
+            background: #635d5d;
         }
 
         #log-content {
@@ -505,6 +489,22 @@
             background: #0F0;
             color: #000;
         }
+
+        .log-title {
+            color: #111;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 3px;
+            background-color: #FF7F00;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.7;
+            border-radius: 2px;
+            image-rendering: pixelated;
+        }
     </style>
 </head>
 
@@ -512,26 +512,22 @@
     <div id="scene">
         <div id="background-container">
             <div id="background"></div>
-
-            <!-- Interactive elements using SVG backgrounds -->
             <div class="interactive" id="arcade1" title="Main Arcade Terminal"></div>
             <div class="interactive" id="arcade2" title="Log Terminal"></div>
             <div class="interactive" id="arcade3" title="Terminal"></div>
             <div class="interactive" id="radio" title="Music Switch"></div>
             <div class="interactive" id="safe" title="Stack Overflow Safe"></div>
         </div>
-
         <div id="content">
             <h1>OSchengdu</h1>
         </div>
-        <div class="scroll-hint">← Drag to explore →</div>
+        <div class="scroll-hint">← Drag or swipe to explore →</div>
     </div>
 
-    <!-- Modals for interactive elements -->
     <div id="terminal-modal" class="modal">
         <div class="terminal">
             <div id="terminal-output">
-                <p>Welcome to OSchengdu Terminal v1.0</p>
+                <p>Welcome to OSchengdu Terminal v0.0.1</p>
                 <p>Type 'help' for available commands</p>
             </div>
             <input type="text" id="terminal-input" placeholder="$ " autofocus>
@@ -545,10 +541,11 @@
         </div>
     </div>
 
-    <!-- 新增：日志模态框 -->
     <div id="log-modal" class="modal">
         <div class="modal-content">
-            <h2>Log Terminal</h2>
+            <div class="log-title">
+                <h2>Log Terminal</h2>
+            </div>
             <input type="password" id="password-input" placeholder="Enter password">
             <textarea id="log-content" readonly></textarea>
             <button class="log-button" id="save-log">Save Changes</button>
@@ -561,7 +558,6 @@
         <button id="close-easter-egg">Continue</button>
     </div>
 
-    <!-- 新增：简历模态框 -->
     <div id="resume-modal" class="modal">
         <div class="modal-content">
             <h2>Resume Links</h2>
@@ -578,37 +574,25 @@
     </audio>
 
     <script>
-        // Initialize background size and interactive elements
         const bgContainer = document.getElementById('background-container');
         const bg = document.getElementById('background');
         const interactiveElements = document.querySelectorAll('.interactive');
-
-        // Modal elements
         const terminalModal = document.getElementById('terminal-modal');
         const radioModal = document.getElementById('radio-modal');
         const safeModal = document.getElementById('safe-modal');
         const easterEgg = document.getElementById('easter-egg');
         const resumeModal = document.getElementById('resume-modal');
         const logModal = document.getElementById('log-modal');
-
-        // Log elements
         const passwordInput = document.getElementById('password-input');
         const logContent = document.getElementById('log-content');
         const saveLogButton = document.getElementById('save-log');
-
-        // Audio element
         const bgm = document.getElementById('bgm');
-
-        // Terminal elements
         const terminalOutput = document.getElementById('terminal-output');
         const terminalInput = document.getElementById('terminal-input');
-
-        // Safe elements
         const safeCodeInput = document.getElementById('safe-code');
         const safeContent = document.getElementById('safe-content');
         const safeSubmit = document.getElementById('safe-submit');
 
-        // Calculate background size
         function resizeBackground() {
             const aspectRatio = 7680 / 2160;
             const viewportHeight = window.innerHeight;
@@ -618,15 +602,11 @@
             bg.style.height = `${viewportHeight}px`;
             bgContainer.style.width = `${requiredWidth}px`;
 
-            // Position interactive elements based on background size
             positionInteractiveElements(requiredWidth, viewportHeight);
-
-            scrollBackground(requiredWidth / 2 - window.innerWidth / 2);
+            scrollBackground(currentScroll);
         }
 
-        // Position interactive elements proportionally
         function positionInteractiveElements(bgWidth, bgHeight) {
-            // These positions should match your CSS positions but in percentage
             const elements = [
                 { id: 'arcade1', x: 0.03, y: 0.1, width: 0.1, height: 0.32 },
                 { id: 'arcade2', x: 0.65, y: 0.15, width: 0.08, height: 0.15 },
@@ -646,7 +626,6 @@
             });
         }
 
-        // Background scrolling logic
         let isDragging = false;
         let startX;
         let scrollLeft;
@@ -663,10 +642,10 @@
             bgContainer.style.transform = `translateX(-${currentScroll}px)`;
         }
 
-        // Event listeners for dragging
         document.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.modal') || e.target.closest('.interactive')) return;
             isDragging = true;
-            startX = e.pageX - bgContainer.offsetLeft;
+            startX = e.pageX;
             scrollLeft = currentScroll;
         });
 
@@ -677,15 +656,15 @@
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
             e.preventDefault();
-            const x = e.pageX - bgContainer.offsetLeft;
-            const walk = (x - startX) * 2;
+            const x = e.pageX;
+            const walk = (x - startX) * 1.5;
             scrollBackground(scrollLeft - walk);
         });
 
-        // Touch events
         document.addEventListener('touchstart', (e) => {
+            if (e.target.closest('.modal') || e.target.closest('.interactive')) return;
             isDragging = true;
-            startX = e.touches[0].pageX - bgContainer.offsetLeft;
+            startX = e.touches[0].pageX;
             scrollLeft = currentScroll;
         });
 
@@ -696,12 +675,18 @@
         document.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
             e.preventDefault();
-            const x = e.touches[0].pageX - bgContainer.offsetLeft;
-            const walk = (x - startX) * 2;
+            const x = e.touches[0].pageX;
+            const walk = (x - startX) * 1.5;
             scrollBackground(scrollLeft - walk);
         });
 
-        // Keyboard navigation
+        document.addEventListener('wheel', (e) => {
+            if (e.target.closest('.modal') || e.target.closest('.interactive')) return;
+            e.preventDefault();
+            const delta = e.deltaX || e.deltaY;
+            scrollBackground(currentScroll + delta * 2);
+        }, { passive: false });
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') {
                 scrollBackground(currentScroll - 100);
@@ -710,13 +695,65 @@
             }
         });
 
-        // Interactive element click handlers
+        // Mouse trail effect
+        const particles = [];
+        const particleDuration = 3000; // 3 seconds in milliseconds
+
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            document.body.appendChild(particle);
+
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 2 + 1;
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed;
+            const startTime = performance.now();
+
+            particles.push({ element: particle, x, y, vx, vy, startTime });
+
+            function updateParticle() {
+                const currentTime = performance.now();
+                const elapsed = currentTime - startTime;
+                const progress = elapsed / particleDuration;
+
+                if (elapsed >= particleDuration) {
+                    particle.remove();
+                    particles.splice(particles.indexOf(particle), 1);
+                    return;
+                }
+
+                x += vx-2;
+                y += vy;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.opacity = 0.7 * (1 - progress);
+            }
+
+            return updateParticle;
+        }
+
+        function updateParticles() {
+            particles.forEach(p => p.update());
+            requestAnimationFrame(updateParticles);
+        }
+
+        requestAnimationFrame(updateParticles);
+
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() < 0.3) {
+                const update = createParticle(e.clientX, e.clientY);
+                particles[particles.length - 1].update = update;
+            }
+        });
+
         document.getElementById('arcade1').addEventListener('click', (e) => {
             e.stopPropagation();
             arcade1Clicks++;
 
             if (arcade1Clicks >= 2) {
-                // Easter egg - secret boss
                 easterEgg.style.display = 'flex';
             } else {
                 terminalModal.style.display = 'flex';
@@ -728,13 +765,11 @@
             }, 1000);
         });
 
-        // 新增：arcade2点击处理
         document.getElementById('arcade2').addEventListener('click', (e) => {
             e.stopPropagation();
             logModal.style.display = 'flex';
             passwordInput.focus();
             
-            // 从localStorage加载日志内容
             const savedLog = localStorage.getItem('arcade-log');
             if (savedLog) {
                 logContent.value = savedLog;
@@ -758,7 +793,6 @@
             safeCodeInput.focus();
         });
 
-        // 新增：密码输入处理
         passwordInput.addEventListener('input', () => {
             if (passwordInput.value === '1337') {
                 logContent.removeAttribute('readonly');
@@ -769,7 +803,6 @@
             }
         });
 
-        // 新增：保存日志
         saveLogButton.addEventListener('click', () => {
             if (passwordInput.value === '1337') {
                 localStorage.setItem('arcade-log', logContent.value);
@@ -780,7 +813,6 @@
         document.querySelectorAll('.light').forEach(light => {
             light.addEventListener('click', (e) => {
                 e.stopPropagation();
-                // Cycle through theme colors
                 const colors = ['#FF7F00', '#9C27B0', '#4CAF50', '#2196F3'];
                 const currentColor = document.body.style.getPropertyValue('--theme-color') || '#FF7F00';
                 const currentIndex = colors.indexOf(currentColor);
@@ -789,7 +821,6 @@
             });
         });
 
-        // Close modals when clicking outside
         window.addEventListener('click', (e) => {
             if (e.target === radioModal || e.target === safeModal || e.target === easterEgg || e.target === resumeModal || e.target === logModal) {
                 radioModal.style.display = 'none';
@@ -798,31 +829,26 @@
                 resumeModal.style.display = 'none';
                 logModal.style.display = 'none';
                 
-                // Reset password input and log content readonly state
                 passwordInput.value = '';
                 logContent.setAttribute('readonly', true);
                 saveLogButton.style.display = 'none';
             }
         });
 
-        // Terminal functionality
         terminalInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 const command = terminalInput.value.trim();
                 terminalInput.value = '';
 
-                // Add command to output
                 const commandElement = document.createElement('p');
                 commandElement.textContent = `$ ${command}`;
                 terminalOutput.appendChild(commandElement);
 
-                // Process command
                 const response = processTerminalCommand(command);
                 const responseElement = document.createElement('p');
                 responseElement.textContent = response;
                 terminalOutput.appendChild(responseElement);
 
-                // Scroll to bottom
                 terminalOutput.scrollTop = terminalOutput.scrollHeight;
             }
         });
@@ -860,8 +886,6 @@
             }
         }
 
-        // Safe functionality
-        // BGM toggle
         document.getElementById('bgm-toggle').addEventListener('click', () => {
             if (bgm.paused) {
                 bgm.play();
@@ -870,14 +894,9 @@
             }
         });
 
-        // Initialize
         window.addEventListener('load', () => {
             resizeBackground();
-
-            // Set theme color variable
             document.body.style.setProperty('--theme-color', '#FF7F00');
-
-            // Try to autoplay music (may be blocked by browser)
             bgm.volume = 0.3;
             const playPromise = bgm.play();
 
@@ -887,7 +906,6 @@
                 });
             }
 
-            // 初始化日志按钮状态
             saveLogButton.style.display = 'none';
         });
 
