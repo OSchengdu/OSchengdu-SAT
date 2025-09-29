@@ -54,7 +54,7 @@
         }
         h3 {
             color: var(--dark);
-            margin-bottom: 5px;
+            margin-bottom: 20px;
         }
         .job, .project {
             margin-bottom: 20px;
@@ -100,16 +100,17 @@
             color: white;
             transform: scale(1.05);
         }
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+        .project-block {
+            display:block;
+        }
+        .project-inline {
+            margin-left: 10px;
         }
         .project-card {
-            border: 1px solid #ddd;
-            padding: 15px;
+            border: 1px solid rgb(211, 211, 211);
             border-radius: 8px;
             transition: all 0.3s ease;
+            margin-bottom: 30px;
         }
         .project-card:hover {
             transform: translateY(-5px);
@@ -144,6 +145,8 @@
                 grid-template-columns: 1fr;
             }
         }
+
+
 
         /* 动画效果 */
         @keyframes fadeInUp {
@@ -198,18 +201,17 @@
             margin: 10px 0;
             font-style: italic;
         }
+
     </style>
 </head>
-<!-- <body>
+<body>
     <header class="animate__animated animate__fadeInDown">
         <h1>poly</h1>
         <div class="contact">
-            ppolitenhammerc@gmail.com | juantan@onionmail.org<br>
+            操作系统PolyCtrlOS-个人推动（owner）<br>
+            ppolitenhammerc@gmail.com<br>
             GitHub: <a href="https://github.com/polypopopo" target="_blank">github.com/polypopopo</a><br>
-            rednotea <a href="https://www.xiaohongshu.com/user/profile/63462a61000000001901f69d">5463671145 3L</a> <br>
-            本-西南财经大学天府学院<br>
-            Telegram: Racine imaginaire, <a href="https://t.me/polypopopo">@polypopopo</a><br>
-            开发环境: Arch Linux & nix Server
+            学历：本-西南财经大学天府学院<br>
         </div>
     </header>
 
@@ -217,138 +219,137 @@
         <h2>工作经历</h2>
 
         <div class="job delay-1">
-            <h3><a href="" target="_blank"></a><span class="date"></span></h3>
+            <h3><a href="" target="_blank">高校门面网站前端开发</a><span class="date">2023.11-2024.03</span></h3>
             <ul>
-                <li></li>
-                <li></li>
+                 老师推荐进组参与, 现场办公
+                <li>使用vue3+thymeleaf，项目初期根据原型方案设计了3个子站点，之后一个月根据项目经理和甲方要求修改</li>
+                <li>对接后端：数据从教务系统获取，高频更新，但后续并未使用该模块；不常变更的静态内容处理；用户权限分类等</li>
+                <li>对对应部分的后台数据库（以及从库）进行索引和结构优化</li>
             </ul>
         </div>
 
         <div class="job delay-2">
             <h3><a href="https://eulixos.com" target="_blank">中科院软件所</a> | 嵌入式系统研发助理工程师 <span class="date">2024.07-2024.11</span></h3>
             <ul>
-                <li>开发RISC-V架构上轻量级AI算子测试框架</li>
+		现场办公
+                <li>RISC-V架构上轻量级AI算子测试框架,测试mxnet和pytorch、onnx三个深度学习框架下的算子并统计结果和优化</li>
                 <li>实现6000+行表格录入自动化测试脚本</li>
                 <li>参与基于<a href="https://eulixos.com" target="_blank">OpenEuler RISC-V</a>的<a href="https://www.aolaios.com" target="_blank">傲来操作系统</a>商业发行版的数据表现对比(和ARM)测试</li>
             </ul>
         </div>
 
         <div class="job delay-3">
-            <h3><a href="https://iscas-ai.gitlab.io/" target="_blank">中科院软件所智能软件研究中心</a> | OpenEuler OLK开发 <span class="date future-date">2025.06至今</span></h3>
+            <h3><a href="https://iscas-ai.gitlab.io/" target="_blank">中科院软件所智能软件研究中心</a> | OpenEuler OLK开发 <span class="date">2025.06-2025.09</span></h3>
             <ul>
-                <li>Linux-riscv IOMMU验证、移植与优化</li>
-		<li>基于RVCK：https://github.com/RVCK-Project/rvck-olk -b OLK-6.6</li>
-		<li>测验证试riscv-iommu裸机驱动包括设备树、iommu_ops等，然后分析 RISC-V IOMMU HPM and nested IOMMU support 和 iommu/riscv: Add irqbypass support 的迁移次序并继续完成</li>
-		<li>主流架构的 iommu-selftests 测试验证和测试项分析</li>
-		<li></li>
+		短期兼职-线上
+                <li>Linux-riscv IOMMU验证、aia驱动移植与优化</li>
+		        <li>工作内容基于RVCK：https://github.com/RVCK-Project/rvck-olk -b OLK-6.6，无代码产出</li>
+		        <li>测验证试riscv-iommu裸机驱动包括设备树、iommu_ops等，然后分析 RISC-V IOMMU HPM and nested IOMMU support 和 iommu/riscv: Add irqbypass support 的迁移次序</li>
+		        <li>主流架构的 iommu-selftests 测试验证和测试项分析</li>
             </ul>
         </div>
-
-
     </section>
 
     <section id="projects" class="animate-section delay-1">
         <h2>开源社区与项目</h2>
         <h3><a href="https://github.com/OSchengdu" target="_blank">OSChengdu社区</a> (owner)</h3>
 
-        <div class="project-grid">
+        <div class="project-block">
+
+
             <div class="project-card delay-1">
-                <h4><a href="https://github.com/Gitlings/gitlings" target="_blank">Gitlings</a> <span class="status developing">开发中</span></h4>
-                <p>Python实现的Git教学工具</p>
-                <ul>
-                    li>Git对象可视化系统</li>
-                    <li>20+种错误注入训练场景</li>
-                    <li>三级AI提示系统(llama-index集成)</li>
-                </ul>
+                <div class="project-inline">
+                    <h4><a href="https://github.com/OSchengdu/SynthIQNexus" target="_blank">SynthNexus</a> <span class="status developing">智能体</span></h4>
+                    <p>搜索智能体</p>
+                    <ul>
+                        <li>Tor爬虫集成(stem库)</li>
+                        <li>SQLite-VSS复合型向量搜索</li>
+                        <li>混合语法生成引擎(Dork+SQL)</li>
+                    </ul>
+                </div>
             </div>
 
             <div class="project-card delay-1">
-                <h4><a href="https://github.com/OSchengdu/SynthIQNexus" target="_blank">SynthNexus</a> <span class="status developing">MVP</span></h4>
-                <p>深网ai搜索引擎</p>
-                <ul>
-                    <li>Tor爬虫集成(stem库)</li>
-                    <li>SQLite-VSS复合型向量搜索</li>
-                    <li>混合语法生成引擎(Dork+SQL)</li>
-                </ul>
+                <div class="project-inline">
+                    <h4><a href="" target="_blank">sputik</a><span class="status developing">ai模拟终端</span></h4>
+                    <p>emulation terminal</p>
+                    <ul>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
             </div>
 
             <div class="project-card delay-2">
-                <h4>PolyCtrlOS <span class="status developing">专科阶段毕设</span></h4>
-                <p>操作系统</p>
-                <ul>
-                    <li>命令行实现</li>
-                    <li>进程调度</li>
-                    <li>基础文件系统</li>
-                </ul>
+                <div class="project-inline">
+                    <h4>PolyCtrlOS <span class="status developing">毕设</span></h4>
+                    <p>操作系统</p>
+                    <ul>
+                        <li><strong><a href="" target="_blank">命令行：</a></strong>使用intel-nasm编写，</li>
+                        <li><strong><a href="" target="_blank">文件系统：</a></strong>嵌入式/直接存储文件系统</li>
+                        <li><strong><a href="" target="_blank">内存及中断管理</a></strong>两者在开发思路上联系紧密因此放在一起介绍</li>
+                        <li><strong><a href="" target="_blank">脚本：</a></strong>在开发过程中根据需要开发的满足测试、编译、复杂维护和查找功能的脚本工具集</li>
+                    </ul>
+                </div>
             </div>
         </div>
-
+    </section>
+    <section id="competitions" class="animate-section delay-2">
         <h3>开源社区参与</h3>
         <ul>
-            <li><strong><a href="https://opencamp.cn" target="_blank">OpenCamp训练营</a></strong>: 担任三个训练营的助教/讲师</li>
-            <li><strong><a href="https://github.com/RISCVers" target="_blank">RISCVers社区</a></strong>: 中科院软件所下属开源社区校园大使</li>
-            <li><strong><a href="https://summer-ospp.ac.cn" target="_blank">华中科技大学开放原子社团成员</a></strong>: 华中科技大学OSPP项目"RISC-V Online"(在线反汇编工具)contributer, 俱乐部主页贡献pr#43 pr#42</li>
-            <li><strong><a href="https://gosim.org/" target="_blank">GOSIM CHINA</a></strong>: 协助组织技术沙龙，受邀演讲，并接受关于黑客松经验的采访</li>
-            <li><strong><a href="https://github.com/HOAC-OS2EDU/HOAC-OS2EDU" target="_blank">HOAC华科开源俱乐部</a></strong>: 参与博客平台开发</li>
-            <li><strong><a href="https://github.com/rustsbi/rustsbi/issues/118" target="_blank">RustSBI</a></strong>: 提交补丁(PR#120)</li>
+            <li><strong><a href="https://opencamp.cn" target="_blank">OpenCamp训练营助教</a></strong>: 海淀志愿组织下已注册志愿者，担任三个训练营（傲来操作系统、rust）的助教、并获得志愿北京荣誉奖励和报道</li>
+            <li><strong><a href="https://github.com/RISCVers" target="_blank">RISCVers社区校园大使</a></strong>: 中科院软件所下属开源社区校园大使，作为特邀大使参加社区建设讨论和开发</li>
+            <li><strong><a href="https://rvdis.openatom.club" target="_blank">华中科技大学开原俱乐部骨干成员</a></strong>负责:OSPP项目（开源之夏）"RISC-V Online"(在线反汇编工具)maintainer, 俱乐部主页维护和发展（共四人长期负责）</li>
+            <li><strong><a href="https://mp.weixin.qq.com/s/a2WyhQnTDrQiNC8HC96Rog" target="_blank">GOSIM CHINA</a></strong>:接受旗下媒体关于黑客松经验的采访</li>
+            <li><strong><a href="https://github.com/rustsbi/rustsbi/issues/118" target="_blank">RustSBI issue 118</a></strong>: PR#120（武汉十大开源软件、rust编写的操作系统引导程序）</li>
         </ul>
     </section>
 
     <section id="competitions" class="animate-section delay-2">
         <h2>社区赛事</h2>
         <ul>
-            <li><strong><a href="https://opencamp.cn/gosim/camp/MoFA2025/stage/1" target="_blank">MOFA智能体大赛</a></strong> 三等奖 300人前10名 SyntIQNexus队长 3人参与 负责架构和全栈开发</li>
-            <li><strong><a href="https://www.marscode.cn/events/2024-competition">MarsCode编程赛</a></strong>优胜奖  初赛第二/决赛第七 700个小组内前10 4人参与 MoFA队长 总共500个队伍 负责演讲和展示</li>
-            <li><strong><a href="https://hackru-s23.devpost.com/project-gallery" target="_blank">HackRU黑客松</a></strong> 和世界各地同学参与 模拟新泽西警局POC开发 4人参与 担任展示页面开发</li>
-            <li><strong><a href="https://ai.hackberkeley.org/" target="_blank">UCB Hackathon</a></strong> 和硅谷初创公司合作 7人 担任智能体模块开发</li>
-            <li><strong>2025 具身智能机器人目标检测算法大赛-河北清华发展研究院具身智能机器人创新中心</strong> <span class="status developing">第六名</span></li>
-            <li><strong>AdventureX黑客松</strong> 中国最大规模黑客松 <span class="status active">入选,146展位,获得kimi赛道三等奖</span></li>
+            <li><strong><a href="https://opencamp.cn/gosim/camp/MoFA2025/stage/1" target="_blank">MOFA智能体大赛</a></strong> 三等奖 5/3000名 SyntIQNexus队长 3人参与 负责架构和全栈开发</li>
+            <li><strong><a href="https://www.marscode.cn/events/2024-competition">MarsCode编程赛</a></strong>优胜奖  初赛第二/决赛第七 7/700名 4人 MoFA队队长 总共500个队伍 负责演讲和展示</li>
+            <li><strong><a href="https://hackru-s23.devpost.com/project-gallery" target="_blank">HackRU黑客松</a></strong> 参与模拟新泽西警局POC开发 4人 担任展示页面开发</li>
+            <li><strong><a href="https://ai.hackberkeley.org/" target="_blank">UCB Hackathon</a></strong> 7人 担任智能体模块开发</li>
+            <li><strong><a href="">2025具身智能机器人目标检测算法大赛</a>河北清华发展研究院具身智能机器人创新中心举办</strong> 获第六名，负责挑选和测试数据集、制作md2pdf脚本、展示视频录制等工作</li>
+            <li><strong><a href="">AdventureX黑客松</a></strong> 入选,并获得kimi赛道三等奖</li>
         </ul>
     </section>
 
     <section id="skills" class="animate-section delay-3">
         <h2>技术栈</h2>
         <div class="skills">
-            <span class="skill">RISC-V</span>
-            <span class="skill">ARM</span>
-            <span class="skill">x86</span>
-            <span class="skill">LLVM</span>
-            <span class="skill">QEMU</span>
-            <span class="skill">KVM</span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
             
-            <span class="skill">Linux Kernel</span>
-            <span class="skill">OpenEuler</span>
-            <span class="skill">RT-Thread</span>
-            <span class="skill">Zephyr</span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
             
-            <span class="skill">Rust</span>
-            <span class="skill">C</span>
-            <span class="skill">NASM</span>
-            <span class="skill">nixOS</span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
             
-            <span class="skill">Docker</span>
-            <span class="skill">Kubernetes</span>
-            <span class="skill">Kata Containers</span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
+            <span class="skill"></span>
             
-            <span class="skill">Perf</span>
-            <span class="skill">GDB</span>
-            <span class="skill">strace</span>
-            <span class="skill">BPF</span>
-            
-            <span class="skill">UEFI</span>
-            <span class="skill">ACPI</span>
-            <span class="skill">Device Tree</span>
-            
-            <span class="skill">SELinux</span>
-            <span class="skill">SGX</span>
-            <span class="skill">TPM</span>
-            
-            <span class="skill">Ext4</span>
-            <span class="skill">Btrfs</span>
-            <span class="skill">Ceph</span>
-            
-            <span class="skill">DPDK</span>
-            <span class="skill">RDMA</span>
         </div>
     </section>
 
@@ -376,5 +377,5 @@
             });
         });
     </script>
-</body> -->
+</body>
 </html>
