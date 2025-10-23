@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPT式网页 - 滑动背景</title>
+    <!-- 引入 Reveal.js 样式和脚本 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/theme/black.min.css">
+    <style>
+        /* 自定义样式 */
+        .reveal {
+            background-image: url('https://www.oschengdu.beer/assets/background.png');
+            background-size: cover;
+            background-position: 0 0;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* 固定背景 */
+        }
+        .reveal .slide h1 {
+            font-size: 2.5em;
+            color: #ffffff;
+        }
+        .reveal .slide p {
+            font-size: 1.2em;
+            line-height: 1.5;
+            color: #ffffff;
+        }
+        .reveal .slide img {
+            max-height: 300px;
+            border-radius: 10px;
+        }
+        /* 半透明背景，增强文字可读性 */
+        .reveal .slide {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <!-- 第一页 -->
+            <section>
+                <h1>欢迎体验PPT网页</h1>
+                <p>这是一个使用Reveal.js制作的幻灯片式网页</p>
+            </section>
+            <!-- 第二页 -->
+            <section>
+                <h2>幻灯片功能</h2>
+                <ul>
+                    <li>支持左右切换</li>
+                    <li>响应式设计</li>
+                    <li>背景随页面滑动</li>
+                </ul>
+            </section>
+            <!-- 第三页 -->
+            <section>
+                <h2>示例图片</h2>
+                <img src="https://via.placeholder.com/600x300" alt="示例图片">
+                <p>图片展示示例</p>
+            </section>
+            <!-- 第四页 -->
+            <section>
+                <h2>谢谢观看</h2>
+                <p>按左右箭头键切换幻灯片</p>
+            </section>
+        </div>
+    </div>
+
+    <!-- 引入 Reveal.js 脚本 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.js"></script>
+    <script>
+        // 初始化 Reveal.js
+        Reveal.initialize({
+            hash: true, // 启用URL哈希导航
+            transition: 'slide', // 切换效果
+            transitionSpeed: 'default', // 切换速度
+            controls: true, // 显示控制箭头
+            progress: true, // 显示进度条
+            center: true, // 内容垂直居中
+            width: 960,
+            height: 700
+        });
+
+        // 监听幻灯片切换事件以移动背景
+        Reveal.addEventListener('slidechanged', function(event) {
+            const totalSlides = Reveal.getTotalSlides(); // 获取总幻灯片数
+            const currentIndex = Reveal.getIndices().h; // 获取当前幻灯片水平索引
+            const background = document.querySelector('.reveal');
+            // 计算背景图片的Y轴偏移（假设背景图高度大于视口）
+            const offset = (currentIndex / (totalSlides - 1)) * 100;
+            background.style.backgroundPosition = `center ${offset}%`;
+        });
+    </script>
+</body>
+</html>
