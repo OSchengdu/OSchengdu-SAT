@@ -3,67 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PPT式网页 - 滑动背景</title>
+    <title>RISC-V与开源操作系统生态调研报告</title>
     <!-- 引入 Reveal.js 样式和脚本 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/theme/black.min.css">
+    <!-- 引入 Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- 引入 Font Awesome 图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 自定义样式 */
-        .reveal {
-            background-image: url('https://www.oschengdu.beer/assets/background.png');
-            background-size: cover;
-            background-position: 0 0;
-            background-repeat: no-repeat;
-            background-attachment: fixed; /* 固定背景 */
-        }
-        .reveal .slide h1 {
-            font-size: 2.5em;
-            color: #ffffff;
-        }
-        .reveal .slide p {
-            font-size: 1.2em;
-            line-height: 1.5;
-            color: #ffffff;
-        }
-        .reveal .slide img {
-            max-height: 300px;
-            border-radius: 10px;
-        }
-        /* 半透明背景，增强文字可读性 */
         .reveal .slide {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            border-radius: 10px;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            color: #ffffff;
+        }
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+            font-family: 'Arial', sans-serif;
+            font-size: 30px; /* 标题字体大小 */
+            color: #ffffff;
+        }
+        .reveal p, .reveal li {
+            font-size: 16px; /* 正文字体大小 */
+            line-height: 1.5;
+            color: #e0e0e0;
+        }
+        .reveal .flex-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .reveal .box {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            flex: 1;
+        }
+        .reveal .conclusion {
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            margin-top: 0.8rem;
+            text-align: center;
+            font-size: 16px;
+        }
+        .reveal img.icon {
+            max-height: 40px;
+            margin: 0.4rem;
+        }
+        .reveal .flow-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .reveal .flow-diagram .gear {
+            text-align: center;
+        }
+        .reveal .path-step {
+
+        }
+        .logo {
+            position: absolute;
+            top:51%;
+            left:31%;
+            width: 48px;
+            height: 48px;
         }
     </style>
 </head>
 <body>
     <div class="reveal">
         <div class="slides">
-            <!-- 第一页 -->
-            <section>
-                <h1>欢迎体验PPT网页</h1>
-                <p>这是一个使用Reveal.js制作的幻灯片式网页</p>
+            <!-- 第1页：封面页 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+1');">
+                <img src="https://avatars.githubusercontent.com/u/190277873?s=64&v=4" alt="Logo" class="logo">
+                <div class="text-center">
+                    <h1 class="mb-3">“教育-科技-人才”视角下的RISC-V与开源操作系统生态调研</h1>
+                    <h3 class="mb-3">主题调研与案例分析</h3>
+                    <p>小组成员：谬雨轩、苗雪冰、谭峻瀚</p>
+                </div>
             </section>
-            <!-- 第二页 -->
-            <section>
-                <h2>幻灯片功能</h2>
-                <ul>
-                    <li>支持左右切换</li>
-                    <li>响应式设计</li>
-                    <li>背景随页面滑动</li>
-                </ul>
+
+            <!-- 第2页：引言 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+2');">
+                <h2 class="mb-3">国家战略下的数字根基</h2>
+                <div class="flex-container">
+                    <div class="box">
+                        <h3>现在的芯片格局</h3>
+                        <p><i class="fa-brands fa-intel icon"></i> X86/Windows (Wintel) 体系-微软、英特尔等</p>
+                        <p><i class="fa-solid fa-microchip icon"></i> ARM/Android (AA) 体系</p>
+                        <p class="font-bold mt-2">生态繁荣，容易被卡脖</p>
+                    </div>
+                    
+                    <div class="box">
+                        <h3>国产芯片架构</h3>
+                        <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/RISC-V-logo.svg/250px-RISC-V-logo.svg.png" alt="RISC-V Logo" class="icon"style="max-height: 20px;margin-left: 157px">  RISC-V 开源指令集</p>
+                        <img src="https://www.openeuler.org/assets/logo.XeUCiAZu.svg" alt="OpenEuler Logo" class="icon"style="margin-left: 148px">
+                        <p> OpenEuler 开源操作系统</p>
+                        <p class="font-bold mt-2">riscv成熟度相比龙芯等国产芯片高，在开源的基础上，其生态和商业基本已被国家企业掌握</p>
+                    </div>
+                </div>
+                <div class="conclusion">
+                    <div class="box">
+                        <h3>现在的芯片格局</h3>
+                        <p><i class="fa-brands fa-intel icon"></i> X86/Windows (Wintel) 体系-微软、英特尔等</p>
+                        <p><i class="fa-solid fa-microchip icon"></i> ARM/Android (AA) 体系</p>
+
+                        <p class="font-bold mt-2">生态繁荣，容易被卡脖</p>
+                    </div>               
             </section>
-            <!-- 第三页 -->
-            <section>
-                <h2>示例图片</h2>
-                <img src="https://via.placeholder.com/600x300" alt="示例图片">
-                <p>图片展示示例</p>
+
+            <!-- 第3页：核心发现一 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+3');">
+                <h2 class="mb-3">技术底座初具规模，应用生态是瓶颈</h2>
+                <div class="flex-container">
+                    <div class="box">
+                        <h3>已成熟领域 - 基础稳固</h3>
+                        <ul class="list-disc ml-5">
+                            <li>Web服务器 (Nginx)</li>
+                            <li>数据库 (MySQL)</li>
+                            <li>编程语言 (Python, Go)</li>
+                        </ul>
+                        <p class="font-bold mt-2">技术验证和布局</p>
+                    </div>
+                    <div class="box">
+                        <h3>生态鸿沟</h3>
+                        <ul class="list-disc ml-5">
+                            <li>专业工业软件 (CAD/CAE)</li>
+                            <li>芯片设计工具 (EDA)</li>
+                            <li>高端图形处理</li>
+                            <li>游戏与多媒体生态</li>
+                        </ul>
+                        <p class="font-bold mt-2">规模化应用和arm以及aarch等系列仍然有不小差距</p>
+                    </div>
+                </div>
+                <div class="conclusion">
+                </div>
+                <div class="box">
+                        <h3>贡献经历</h3>
+                        <ul class="list-disc ml-5">
+                            <li>参与基于openeuler的分发版上的深度学习框架的迁移和平台优化</li>
+                            <li>基础软件布局已经趋于成熟，但还有很多空间可以参与贡献</li>
+                        </ul>
+                        <p class="font-bold mt-2"></p>
+                    </div>
             </section>
-            <!-- 第四页 -->
-            <section>
-                <h2>谢谢观看</h2>
-                <p>按左右箭头键切换幻灯片</p>
+
+            <!-- 第4页：核心发现二 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+4');">
+                <h2 class="mb-3">开源社区已成为“产-学-研”协同的核心枢纽</h2>
+                <div class="flow-diagram">
+                    <div class="gear">
+                        <i class="fa-solid fa-gear fa-2x mb-2"></i>
+                        <p class="font-bold">开源社区 (如 OpenEuler)</p>
+                    </div>
+                    <div class="flex-container">
+                        <div class="box text-center">
+                            <i class="fa-solid fa-building fa-lg mb-2"></i>
+                            <p>产业 (出题)</p>
+                            <p class="text-sm">提出真实场景需求、提供应用场景</p>
+                        </div>
+                        <div class="box text-center">
+                            <i class="fa-solid fa-graduation-cap fa-lg mb-2"></i>
+                            <p>高校 (研究)</p>
+                            <p class="text-sm">理论创新、算法研究、人才培养</p>
+                        </div>
+                        <div class="box text-center">
+                            <i class="fa-solid fa-user fa-lg mb-2"></i>
+                            <p>人才 (贡献)</p>
+                            <p class="text-sm">代码贡献、文档维护、生态推广</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="conclusion">
+                    <p>社区实现了【教育】赋能【科技】、【科技】锤炼【人才】、【人才】反哺【产业】的完美协同</p>
+                </div>
+                <p>
+                相关社区：OSC-DEV、GTOC、RISCVers <br>
+                相关竞赛：Cie全国risc-v高水平创新及应用大赛、Rvspoc
+            </p>
+            </section>
+
+            <!-- 第5页：开源贡献实践 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+5');">
+                <h3 class="mb-3">开源贡献实践：以RISC-online项目为例</h2>
+                <div class="flex-container">                    
+                    <div class="box">
+                        <h2>RISC-online：反汇编工具</h2>
+                        <p>专为RISC-V优化的反汇编工具，将二进制代码解析为汇编语言，支持调试与分析。</p>
+                        <p><strong>工具链定位：</strong>嵌入SDK与开发工具，未来扩展至命令行与APP，降低开发门槛。</p>
+                        <p><strong>生态作用：</strong>反哺上游RustSBI（航天设备使用BIOS），作为sdk的一部分便利更多开发者。</p>
+                    </div>
+                    <div class="box">
+                        <h2>制度与地域支撑</h2>
+                        <p><strong>OSPP计划：</strong>“GSoC中国版”，提供资金与导师，助力学生融入开源社区。</p>
+                        <p><strong>武汉十大开源：</strong>RISC-online隶属RustSBI，体现城市对开源的战略投入。</p>
+                        <p><strong>实践成果：</strong>团队PR优化显示逻辑被合并，提升工具易用性。</p>
+                    </div>
+                </div>
+                <div class="conclusion">
+                </div>
+                <div class="box">
+                    <h2>贡献经历(谬)</h2>
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.IcOlXUM-VPow5SI98-9oKgHaGS%3Fcb%3D12%26pid%3DApi&f=1&ipt=be56bd9dca5061adb966026418ec1cd71807721752b8b0289a5ced68e67b9a91&ipo=images" alt="" style="width:325px;height: 340px;margin-left: 34%;">    
+                </div>     
+            </section>
+
+            <!-- 第6页：启示与展望 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+7');">
+                <h2 class="mb-3">启示与展望：拥抱开源，赢得未来</h2>
+                <div class="box">
+                    <p><i class="fa-solid fa-book fa-lg mr-2"></i> <strong>对教育的启示</strong></p>
+                    <ul class="list-disc ml-5">
+                        <li>鼓励“开源式学习”，将社区贡献作为高阶实践</li>
+                        <li>培养学生解决真实、开放性问题的能力</li>
+                    </ul>
+                </div>
+                <div class="box">
+                    <p><i class="fa-solid fa-person-hiking fa-lg mr-2"></i> <strong>对个人的启示</strong></p>
+                    <ul class="list-disc ml-5">
+                        <li>将个人成长与国家战略需求相结合</li>
+                        <li>在RISC-V与开源OS的广阔天地中，实现个人价值</li>
+                    </ul>
+                </div>
+
+            </section>
+
+            <!-- 第7页：谢谢聆听 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+8');" class="text-center">
+                <h1 class="mb-3">感谢聆听，欢迎提问！</h1>
+                <p>谬雨轩、苗雪冰、谭峻瀚</p>
             </section>
         </div>
     </div>
@@ -73,24 +244,14 @@
     <script>
         // 初始化 Reveal.js
         Reveal.initialize({
-            hash: true, // 启用URL哈希导航
-            transition: 'slide', // 切换效果
-            transitionSpeed: 'default', // 切换速度
-            controls: true, // 显示控制箭头
-            progress: true, // 显示进度条
-            center: true, // 内容垂直居中
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            controls: true,
+            progress: true,
+            center: true,
             width: 960,
             height: 700
-        });
-
-        // 监听幻灯片切换事件以移动背景
-        Reveal.addEventListener('slidechanged', function(event) {
-            const totalSlides = Reveal.getTotalSlides(); // 获取总幻灯片数
-            const currentIndex = Reveal.getIndices().h; // 获取当前幻灯片水平索引
-            const background = document.querySelector('.reveal');
-            // 计算背景图片的Y轴偏移（假设背景图高度大于视口）
-            const offset = (currentIndex / (totalSlides - 1)) * 100;
-            background.style.backgroundPosition = `center ${offset}%`;
         });
     </script>
 </body>
