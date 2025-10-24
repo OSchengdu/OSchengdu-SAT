@@ -158,9 +158,12 @@
             justify-content: center;
             cursor: pointer;
             z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-
+        .browser-toggle:hover {
+            background: #2d3748;
+        }
 
         .browser-iframe {
             width: 100%;
@@ -746,7 +749,7 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #;
+            background: #4a5568;
             color: white;
             border: none;
             border-radius: 50%;
@@ -757,7 +760,13 @@
             justify-content: center;
             cursor: pointer;
             z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
+
+        .browser-toggle:hover {
+            background: #2d3748;
+        }
+
         .browser-iframe {
             width: 100%;
             height: 100%;
@@ -988,12 +997,15 @@
             </div>
         </div>
     </div>
+    <div>
     <button class="browser-toggle" id="browserToggle">
+        <i class="fas fa-window-restore"></i>
     </button>
 
     <button class="ai-assistant-toggle" id="aiAssistantToggle">
         <i class="fas fa-robot"></i>
     </button>
+    </div>
     <div class="reveal">
         <div class="slides">
             <!-- 第0页：标题页 -->
