@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI应用工程：历史、基础与提示词工程</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/theme/black.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .reveal .slide {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            color: #ffffff;
+        }
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+            font-family: 'Arial', sans-serif;
+            font-size: 30px;
+            color: #ffffff;
+        }
+        .reveal p, .reveal li {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #e0e0e0;
+        }
+        .reveal .flex-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .reveal .box {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            flex: 1;
+        }
+        .reveal .conclusion {
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            margin-top: 0.8rem;
+            text-align: center;
+            font-size: 16px;
+        }
+        .reveal img.icon {
+            max-height: 40px;
+            margin: 0.4rem;
+        }
+        .reveal .flow-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .reveal .path-step {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 48px;
+            height: 48px;
+        }
+        .tech-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            margin: 0.2rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 1rem;
+            font-size: 14px;
+        }
+
+        /* 嵌入式浏览器样式 */
+        .browser-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 400px;
+            height: 300px;
+            background: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .browser-header {
+            background: #333;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #555;
+        }
+
+        .browser-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .browser-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .browser-close {
+            background: #ff5f57;
+        }
+
+        .browser-minimize {
+            background: #ffbd2e;
+        }
+
+        .browser-expand {
+            background: #28ca42;
+        }
+
+        .browser-url-bar {
+            flex: 1;
+            margin: 0 10px;
+            background: #222;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .browser-content {
+            flex: 1;
+            border: none;
+            background: white;
+        }
+
+        .browser-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #191919;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+
+
+        .browser-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 嵌入式浏览器 -->
+    <div class="browser-container" id="browserContainer">
+        <div class="browser-header">
+            <div class="browser-controls">
+                <div class="browser-btn browser-close" id="browserClose"></div>
+                <div class="browser-btn browser-minimize" id="browserMinimize"></div>
+                <div class="browser-btn browser-expand" id="browserExpand"></div>
+            </div>
+            <input type="text" class="browser-url-bar" id="browserUrl" value="https://bbycroft.net/llm" placeholder="输入网址...">
+            <button id="browserGo" style="background:#4a5568;color:white;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;">前往</button>
+        </div>
+        <div class="browser-content">
+            <iframe class="browser-iframe" id="browserIframe" src="https://bbycroft.net/llm"></iframe>
+        </div>
+    </div>
+
+    <button class="browser-toggle" id="browserToggle">
+        <i class="fas fa-window-restore"></i>
+    </button>
+
+    <div class="reveal">
+        <div class="slides">
+            <!-- 第0页：标题页 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+1');">
+                <h1 class="mb-3">AI应用工程：历史、基础与提示词工程</h1>
+                <h3 class="mb-3">从理论到实践的AI应用开发</h3>
+                <p>基于大语言模型的应用开发</p>
+            </section>
+
+            <!-- 第1页：AI应用发展历史 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+2');">
+                <h2 class="mb-3">从规则系统到大模型：AI应用的演进之路</h2>
+                <div class="flex-container">
+                    <div class="box">
+                        <h3>🚀 发展历程</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>1950s-1980s</strong>: 基于规则的专家系统</li>
+                            <li><strong>1990s-2010s</strong>: 统计机器学习时代</li>
+                            <li><strong>2017-至今</strong>: Transformer与大模型革命</li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <h3>⚡ 当前挑战</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>大模型间限制</strong>: 能力差异、成本控制</li>
+                            <li><strong>大模型内限制</strong>: 上下文长度、推理准确性</li>
+                            <li><strong>应用层限制</strong>: 状态管理、安全性</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="conclusion">
+                    <p>框架通过参数优化、提示词工程、状态管理来规避AI应用的限制</p>
+                </div>
+            </section>
+
+            <!-- 第2页：Token化机制 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+3');">
+                <h2 class="mb-3">Token化机制：AI理解语言的基础</h2>
+                <div class="flex-container">
+                    <div class="box">
+                        <h3>🔤 Token化原理</h3>
+                        <ul class="list-disc ml-5">
+                            <li>文本 → Token序列的转换过程</li>
+                            <li>基于BPE(Byte Pair Encoding)算法</li>
+                            <li>影响模型输入长度和计算效率</li>
+                        </ul>
+                        <div class="mt-4">
+                            <p><strong>示例：</strong>"Hello World" → ["Hello", " World"]</p>
+                            <p><strong>中文：</strong>"你好世界" → ["你", "好", "世", "界"]</p>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h3>🌍 中英文差异</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>英文</strong>: 按单词/子词分割，Token效率高</li>
+                            <li><strong>中文</strong>: 按字符分割，Token效率较低</li>
+                            <li><strong>影响</strong>: 相同字符数，中文消耗更多Token</li>
+                        </ul>
+                        <div class="mt-4">
+                            <p><strong>优化策略：</strong></p>
+                            <ul class="list-disc ml-5">
+                                <li>精简中文表达</li>
+                                <li>合理控制输入长度</li>
+                                <li>考虑Token成本</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第3页：推理过程与思维链 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+4');">
+                <h2 class="mb-3">推理过程与思维链机制</h2>
+                <div class="flex-container">
+                    <div class="box">
+                        <h3>🧠 推理过程演示</h3>
+                        <ul class="list-disc ml-5">
+                            <li>输入Token化与嵌入</li>
+                            <li>注意力机制计算</li>
+                            <li>前向传播与概率预测</li>
+                            <li>输出生成与采样</li>
+			    <li>工作原理演示↓</li>
+                        </ul>
+                        <div class="mt-4">
+                            <button id="openLLMVisualizer" style="color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-size:20px">
+                                bbycroft.net/llm
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h3>🔗 思维链(Chain-of-Thought)</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>定义</strong>: 让AI展示推理步骤的方法</li>
+                            <li><strong>优势</strong>: 提高复杂问题解决能力</li>
+                            <li><strong>应用</strong>: 数学推理、逻辑分析</li>
+                        </ul>
+                        <div class="mt-4">
+                            <p><strong>示例提示词：</strong></p>
+                            <p class="text-sm">"请逐步推理：如果我有3个苹果，吃了1个，又买了5个，现在有多少个？"</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第4页：AI应用关键技术概览 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+5');">
+                <h2 class="mb-3">AI应用关键技术：为框架铺路</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="path-step">
+                        <h4>💬 多轮对话维护</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>上下文窗口管理</li>
+                            <li>对话历史摘要</li>
+                            <li>话题切换检测</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>🔄 错误恢复机制</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>异常检测与处理</li>
+                            <li>重试策略</li>
+                            <li>降级方案</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>🔒 会话隔离安全</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>多租户数据隔离</li>
+                            <li>访问控制</li>
+                            <li>审计日志</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>🛡️ 攻击向量防护</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>提示词注入防御</li>
+                            <li>输入输出过滤</li>
+                            <li>模型窃取防护</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>💾 状态持久化</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>会话状态存储</li>
+                            <li>长期记忆管理</li>
+                            <li>数据加密</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>🎯 对话管理</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>意图识别</li>
+                            <li>流程控制</li>
+                            <li>上下文理解</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="conclusion mt-4">
+                    <p>这些技术构成了现代AI应用框架的核心能力</p>
+                </div>
+            </section>
+
+            <!-- 第5页：项目演示（预留） -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+6');">
+                <h2 class="mb-3">项目演示：基于CNB的Qwen模型应用</h2>
+                <div class="text-center">
+                    <h3>🚧 演示准备中</h3>
+                    <div class="mt-8">
+                        <p><strong>演示内容：</strong></p>
+                        <ul class="list-disc ml-5 text-left inline-block">
+                            <li>CNB平台模型调用实战</li>
+                            <li>项目架构与原理解析</li>
+                            <li>实时推理演示</li>
+                        </ul>
+                    </div>
+                    <div class="mt-8">
+                        <button id="openCNB" style=";color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-size:13px">
+				cnb.cool/ai-models/Ollama/qwen3/-/tree/main
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第6页：提示词工程与参数调试 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+7');">
+                <h2 class="mb-3">提示词工程与参数调试实战</h2>
+                <div class="flex-container">
+                    <div class="box">
+                        <h3>📝 提示词设计方法</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>角色设定</strong>: 明确AI的角色定位</li>
+                            <li><strong>任务分解</strong>: 复杂任务分步执行</li>
+                            <li><strong>格式约束</strong>: 指定输出格式要求</li>
+                            <li><strong>示例引导</strong>: 提供输入输出示例</li>
+                        </ul>
+                        <div class="mt-4">
+                            <p><strong>优秀提示词特征：</strong></p>
+                            <ul class="list-disc ml-5 text-sm">
+                                <li>清晰明确</li>
+                                <li>结构化</li>
+                                <li>可执行</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h3>🎛️ 参数调试技巧</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>Temperature</strong>: 控制创造性(0-2)</li>
+                            <li><strong>Top-p</strong>: 核采样，控制多样性</li>
+                            <li><strong>Max Tokens</strong>: 输出长度限制</li>
+                            <li><strong>Frequency Penalty</strong>: 减少重复</li>
+                        </ul>
+                        <div class="mt-4">
+                            <p><strong>场景化配置：</strong></p>
+                            <ul class="list-disc ml-5 text-sm">
+                                <li>代码生成: 低Temperature</li>
+                                <li>创意写作: 高Temperature</li>
+                                <li>技术文档: 适中配置</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第7页：次回预告 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+8');">
+                <h2 class="mb-3">次回予告：深入AI应用工程</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="path-step">
+                        <h4>🔌 大模型调用模式</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>P2P推理架构</li>
+                            <li>Llama.cpp本地部署</li>
+                            <li>Ollama服务化</li>
+                            <li>游戏引擎内置推理</li>
+                            <li>ONNX Runtime + 量化</li>
+                            <li>浏览器端推理</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>⚙️ 参数配置机制</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>动态参数调整</li>
+                            <li>A/B测试策略</li>
+                            <li>性能监控优化</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>💬 多轮对话深度</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>状态机设计模式</li>
+                            <li>上下文压缩技术</li>
+                            <li>长期记忆实现</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>🔄 状态维护细节</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>分布式状态管理</li>
+                            <li>容错与恢复</li>
+                            <li>性能优化策略</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="conclusion mt-4">
+                    <p>下节课将深入探讨AI应用工程的高级主题和最佳实践</p>
+                </div>
+            </section>
+
+            <!-- 第8页：结束页 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+9');" class="text-center">
+                <h1 class="mb-3">感谢聆听！</h1>
+                <p>期待下节课的深入探讨</p>
+                <div class="mt-8">
+                    <p class="text-sm">问题与讨论</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.js"></script>
+    <script>
+        // 初始化 Reveal.js
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            controls: false,
+            progress: true,
+            center: true,
+            width: 960,
+            height: 700
+        });
+
+        // 嵌入式浏览器功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const browserContainer = document.getElementById('browserContainer');
+            const browserToggle = document.getElementById('browserToggle');
+            const browserClose = document.getElementById('browserClose');
+            const browserMinimize = document.getElementById('browserMinimize');
+            const browserExpand = document.getElementById('browserExpand');
+            const browserUrl = document.getElementById('browserUrl');
+            const browserGo = document.getElementById('browserGo');
+            const browserIframe = document.getElementById('browserIframe');
+            const openLLMVisualizer = document.getElementById('openLLMVisualizer');
+            const openCNB = document.getElementById('openCNB');
+
+            let isMinimized = false;
+            let isExpanded = false;
+
+            // 切换浏览器显示/隐藏
+            browserToggle.addEventListener('click', function() {
+                if (browserContainer.style.display === 'flex') {
+                    browserContainer.style.display = 'none';
+                } else {
+                    browserContainer.style.display = 'flex';
+                    // 重置状态
+                    isMinimized = false;
+                    isExpanded = false;
+                    browserContainer.style.width = '80%';
+                    browserContainer.style.height = '80%';
+                    browserContainer.style.top = '10%';
+                    browserContainer.style.right = '10%';
+                }
+            });
+
+            // 关闭浏览器
+            browserClose.addEventListener('click', function() {
+                browserContainer.style.display = 'none';
+            });
+
+            // 最小化浏览器
+            browserMinimize.addEventListener('click', function() {
+                if (isMinimized) {
+                    browserContainer.style.height = '300px';
+                    isMinimized = false;
+                } else {
+                    browserContainer.style.height = '40px';
+                    isMinimized = true;
+                }
+            });
+
+            // 展开/恢复浏览器
+            browserExpand.addEventListener('click', function() {
+                if (isExpanded) {
+                    browserContainer.style.width = '400px';
+                    browserContainer.style.height = '300px';
+                    browserContainer.style.top = '20px';
+                    browserContainer.style.right = '20px';
+                    isExpanded = false;
+                } else {
+                    browserContainer.style.width = '80%';
+                    browserContainer.style.height = '80%';
+                    browserContainer.style.top = '10%';
+                    browserContainer.style.right = '10%';
+                    isExpanded = true;
+                }
+            });
+
+            // 前往输入的网址
+            browserGo.addEventListener('click', function() {
+                let url = browserUrl.value;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+                browserIframe.src = url;
+            });
+
+            // 按Enter键前往网址
+            browserUrl.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    browserGo.click();
+                }
+            });
+
+            // 打开LLM可视化工具
+            openLLMVisualizer.addEventListener('click', function() {
+                browserContainer.style.display = 'flex';
+                browserUrl.value = 'https://bbycroft.net/llm';
+                browserIframe.src = 'https://bbycroft.net/llm';
+                browserContainer.style.width = '80%';
+                browserContainer.style.height = '80%';
+                browserContainer.style.top = '10%';
+                browserContainer.style.right = '10%';
+            });
+
+            // 打开CNB平台
+            openCNB.addEventListener('click', function() {
+                browserContainer.style.display = 'flex';
+                browserUrl.value = 'https://cloud.tencent.com/product/cnb';
+                browserIframe.src = 'https://cnb.cool/ai-models/Ollama/qwen3/-/tree/main';
+                browserContainer.style.width = '80%';
+                browserContainer.style.height = '80%';
+                browserContainer.style.top = '10%';
+                browserContainer.style.right = '10%';
+
+            });
+
+            // 点击浏览器外部区域不关闭浏览器
+            browserContainer.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第一节：AI应用工程：历史、基础与提示词工程</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/theme/black.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 原有样式保持不变 */
+        .reveal .slide {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            color: #ffffff;
+        }
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+            font-family: 'Arial', sans-serif;
+            font-size: 30px;
+            color: #ffffff;
+        }
+        .reveal p, .reveal li {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #e0e0e0;
+        }
+        .reveal .flex-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .reveal .box {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            flex: 1;
+        }
+        .reveal .conclusion {
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            margin-top: 0.8rem;
+            text-align: center;
+            font-size: 16px;
+        }
+        .reveal img.icon {
+            max-height: 40px;
+            margin: 0.4rem;
+        }
+        .reveal .flow-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .reveal .path-step {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 48px;
+            height: 48px;
+        }
+        .tech-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            margin: 0.2rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 1rem;
+            font-size: 14px;
+        }
+
+        /* 嵌入式浏览器样式 */
+        .browser-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 400px;
+            height: 300px;
+            background: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .browser-header {
+            background: #333;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #555;
+        }
+
+        .browser-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .browser-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .browser-close {
+            background: #ff5f57;
+        }
+
+        .browser-minimize {
+            background: #ffbd2e;
+        }
+
+        .browser-expand {
+            background: #28ca42;
+        }
+
+        .browser-url-bar {
+            flex: 1;
+            margin: 0 10px;
+            background: #222;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .browser-content {
+            flex: 1;
+            border: none;
+            background: white;
+        }
+
+        .browser-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .browser-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* AI聊天助手样式 */
+        .ai-assistant-container {
+            position: fixed;
+            bottom: 106px;
+            right: 56px;
+            width: 350px;
+            height: 500px;
+            background: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 12px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        .ai-assistant-header {
+            background: #333;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #555;
+        }
+
+        .ai-assistant-title {
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-assistant-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .ai-assistant-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .ai-assistant-close {
+            background: #ff5f57;
+        }
+
+        .ai-assistant-minimize {
+            background: #ffbd2e;
+        }
+
+        .ai-assistant-expand {
+            background: #28ca42;
+        }
+
+        .ai-assistant-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .ai-assistant-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ai-message {
+            background: #2d3748;
+            padding: 10px 14px;
+            border-radius: 12px;
+            max-width: 85%;
+            align-self: flex-start;
+            color: white;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            background: #4a5568;
+            align-self: flex-end;
+        }
+
+        .ai-assistant-input-area {
+            padding: 12px 16px;
+            border-top: 1px solid #444;
+            display: flex;
+            gap: 8px;
+        }
+
+        .ai-assistant-input {
+            flex: 1;
+            background: #2d3748;
+            border: 1px solid #4a5568;
+            border-radius: 20px;
+            padding: 10px 16px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .ai-assistant-input:focus {
+            border-color: #63b3ed;
+        }
+
+        .ai-assistant-send {
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .ai-assistant-send:hover {
+            background: #3182ce;
+        }
+
+        .ai-assistant-toggle {
+            position: fixed;
+            bottom: 82px;
+            right: 20px;
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .ai-assistant-toggle:hover {
+            background: #3182ce;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 10px 14px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #a0aec0;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        .ai-message-content {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- 嵌入式浏览器 -->
+    <div class="browser-container" id="browserContainer">
+        <div class="browser-header">
+            <div class="browser-controls">
+                <div class="browser-btn browser-close" id="browserClose"></div>
+                <div class="browser-btn browser-minimize" id="browserMinimize"></div>
+                <div class="browser-btn browser-expand" id="browserExpand"></div>
+            </div>
+            <input type="text" class="browser-url-bar" id="browserUrl" value="https://bbycroft.net/llm" placeholder="输入网址...">
+            <button id="browserGo" style="background:#4a5568;color:white;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;">前往</button>
+        </div>
+        <div class="browser-content">
+            <iframe class="browser-iframe" id="browserIframe" src="https://bbycroft.net/llm"></iframe>
+        </div>
+    </div>
+
+    <!-- AI聊天助手 -->
+    <div class="ai-assistant-container" id="aiAssistantContainer">
+        <div class="ai-assistant-header">
+            <div class="ai-assistant-title">
+                <i class="fas fa-robot"></i>
+                AI助手
+            </div>
+            <div class="ai-assistant-controls">
+                <div class="ai-assistant-btn ai-assistant-minimize" id="aiAssistantMinimize"></div>
+                <div class="ai-assistant-btn ai-assistant-expand" id="aiAssistantExpand"></div>
+                <div class="ai-assistant-btn ai-assistant-close" id="aiAssistantClose"></div>
+            </div>
+        </div>
+        <div class="ai-assistant-content">
+            <div class="ai-assistant-messages" id="aiAssistantMessages">
+                <div class="ai-message">
+                    <div class="ai-message-content">您好！我是AI助手，可以帮助您解答关于AI应用工程的问题。请问有什么我可以帮助您的吗？</div>
+                </div>
+            </div>
+            <div class="ai-assistant-input-area">
+                <input type="text" class="ai-assistant-input" id="aiAssistantInput" placeholder="输入您的问题...">
+                <button class="ai-assistant-send" id="aiAssistantSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <button class="browser-toggle" id="browserToggle">
+    </button>
+
+    <button class="ai-assistant-toggle" id="aiAssistantToggle">
+        <i class="fas fa-robot"></i>
+    </button>
+    <div class="reveal">
+        <div class="slides">
+            <!-- 第0页：标题页 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+1');">
+                <h1 class="mb-3">AI应用工程：历史、基础与提示词工程</h1>
+                <h3 class="mb-3">从理论到实践的AI应用开发</h3>
+                <p>基于大语言模型的应用开发</p>
+            </section>
+
+            <!-- 第1页：AI应用发展历史 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+2');">
+                <h2 class="mb-3">从规则系统到大模型：AI应用的演进之路</h2>
+                <div class="flex-container">
+                    <div class="box">
+                        <h3>🚀 发展历程</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>1950s-1980s</strong>: 基于规则的专家系统</li>
+                            <li><strong>1990s-2010s</strong>: 统计机器学习时代</li>
+                            <li><strong>2017-至今</strong>: Transformer与大模型革命</li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <h3>⚡ 当前挑战</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>大模型间限制</strong>: 能力差异、成本控制</li>
+                            <li><strong>大模型内限制</strong>: 上下文长度、推理准确性</li>
+                            <li><strong>应用层限制</strong>: 状态管理、安全性</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="conclusion">
+                    <p>框架通过参数优化、提示词工程、状态管理来规避AI应用的限制</p>
+                </div>
+            </section>
+
+            <!-- 第2页：Token化机制 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+3');">
+                <h2 class="mb-3">Token化机制：AI理解语言的基础</h2>
+                <div class="flex-container">
+                    <div class="box">
+                        <h3>🔤 Token化原理</h3>
+                        <ul class="list-disc ml-5">
+                            <li>文本 → Token序列的转换过程</li>
+                            <li>基于BPE(Byte Pair Encoding)算法</li>
+                            <li>影响模型输入长度和计算效率</li>
+                        </ul>
+                        <div class="mt-4">
+                            <p><strong>示例：</strong>"Hello World" → ["Hello", " World"]</p>
+                            <p><strong>中文：</strong>"你好世界" → ["你", "好", "世", "界"]</p>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h3>🌍 中英文差异</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>英文</strong>: 按单词/子词分割，Token效率高</li>
+                            <li><strong>中文</strong>: 按字符分割，Token效率较低</li>
+                            <li><strong>影响</strong>: 相同字符数，中文消耗更多Token</li>
+                        </ul>
+                        <div class="mt-4">
+                            <p><strong>优化策略：</strong></p>
+                            <ul class="list-disc ml-5">
+                                <li>精简中文表达</li>
+                                <li>合理控制输入长度</li>
+                                <li>考虑Token成本</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第3页：推理过程与思维链 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+4');">
+                <h2 class="mb-3">推理过程与思维链机制</h2>
+                <div class="flex-container">
+                    <div class="box">
+                        <h3>🧠 推理过程演示</h3>
+                        <ul class="list-disc ml-5">
+                            <li>输入Token化与嵌入</li>
+                            <li>注意力机制计算</li>
+                            <li>前向传播与概率预测</li>
+                            <li>输出生成与采样</li>
+			    <li>工作原理演示↓</li>
+                        </ul>
+                        <div class="mt-4">
+                            <button id="openLLMVisualizer" style="color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-size:20px">
+                                bbycroft.net/llm
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h3>🔗 思维链(Chain-of-Thought)</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>定义</strong>: 让AI展示推理步骤的方法</li>
+                            <li><strong>优势</strong>: 提高复杂问题解决能力</li>
+                            <li><strong>应用</strong>: 数学推理、逻辑分析</li>
+                        </ul>
+                        <div class="mt-4">
+                            <p><strong>示例提示词：</strong></p>
+                            <p class="text-sm">"请逐步推理：如果我有3个苹果，吃了1个，又买了5个，现在有多少个？"</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第4页：AI应用关键技术概览 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+5');">
+                <h2 class="mb-3">AI应用关键技术：为框架铺路</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="path-step">
+                        <h4>💬 多轮对话维护</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>上下文窗口管理</li>
+                            <li>对话历史摘要</li>
+                            <li>话题切换检测</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>🔄 错误恢复机制</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>异常检测与处理</li>
+                            <li>重试策略</li>
+                            <li>降级方案</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>🔒 会话隔离安全</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>多租户数据隔离</li>
+                            <li>访问控制</li>
+                            <li>审计日志</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>🛡️ 攻击向量防护</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>提示词注入防御</li>
+                            <li>输入输出过滤</li>
+                            <li>模型窃取防护</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>💾 状态持久化</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>会话状态存储</li>
+                            <li>长期记忆管理</li>
+                            <li>数据加密</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>🎯 对话管理</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>意图识别</li>
+                            <li>流程控制</li>
+                            <li>上下文理解</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="conclusion mt-4">
+                    <p>这些技术构成了现代AI应用框架的核心能力</p>
+                </div>
+            </section>
+
+            <!-- 第5页：项目演示（预留） -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+6');">
+                <h2 class="mb-3">项目演示：基于CNB的Qwen模型应用</h2>
+                <div class="text-center">
+                    <h3>🚧 演示准备中</h3>
+                    <div class="mt-8">
+                        <p><strong>演示内容：</strong></p>
+                        <ul class="list-disc ml-5 text-left inline-block">
+                            <li>CNB平台模型调用实战</li>
+                            <li>项目架构与原理解析</li>
+                            <li>实时推理演示</li>
+                        </ul>
+                    </div>
+                    <div class="mt-8">
+                        <button id="openCNB" style=";color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-size:13px">
+				cnb.cool/ai-models/Ollama/qwen3/-/tree/main
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第6页：提示词工程与参数调试 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+7');">
+                <h2 class="mb-3">提示词工程与参数调试实战</h2>
+                <div class="flex-container">
+                    <div class="box">
+                        <h3>📝 提示词设计方法</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>角色设定</strong>: 明确AI的角色定位</li>
+                            <li><strong>任务分解</strong>: 复杂任务分步执行</li>
+                            <li><strong>格式约束</strong>: 指定输出格式要求</li>
+                            <li><strong>示例引导</strong>: 提供输入输出示例</li>
+                        </ul>
+                        <div class="mt-4">
+                            <p><strong>优秀提示词特征：</strong></p>
+                            <ul class="list-disc ml-5 text-sm">
+                                <li>清晰明确</li>
+                                <li>结构化</li>
+                                <li>可执行</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h3>🎛️ 参数调试技巧</h3>
+                        <ul class="list-disc ml-5">
+                            <li><strong>Temperature</strong>: 控制创造性(0-2)</li>
+                            <li><strong>Top-p</strong>: 核采样，控制多样性</li>
+                            <li><strong>Max Tokens</strong>: 输出长度限制</li>
+                            <li><strong>Frequency Penalty</strong>: 减少重复</li>
+                        </ul>
+                        <div class="mt-4">
+                            <p><strong>场景化配置：</strong></p>
+                            <ul class="list-disc ml-5 text-sm">
+                                <li>代码生成: 低Temperature</li>
+                                <li>创意写作: 高Temperature</li>
+                                <li>技术文档: 适中配置</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第7页：次回预告 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+8');">
+                <h2 class="mb-3">次回预告：深入AI应用工程</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="path-step">
+                        <h4>🔌 大模型调用模式</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>P2P推理架构</li>
+                            <li>Llama.cpp本地部署</li>
+                            <li>Ollama服务化</li>
+                            <li>游戏引擎内置推理</li>
+                            <li>ONNX Runtime + 量化</li>
+                            <li>浏览器端推理</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>⚙️ 参数配置机制</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>动态参数调整</li>
+                            <li>A/B测试策略</li>
+                            <li>性能监控优化</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>💬 多轮对话深度</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>状态机设计模式</li>
+                            <li>上下文压缩技术</li>
+                            <li>长期记忆实现</li>
+                        </ul>
+                    </div>
+                    <div class="path-step">
+                        <h4>🔄 状态维护细节</h4>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li>分布式状态管理</li>
+                            <li>容错与恢复</li>
+                            <li>性能优化策略</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="conclusion mt-4">
+                    <p>下节课将深入探讨AI应用工程的高级主题和最佳实践</p>
+                </div>
+            </section>
+
+            <!-- 第8页：结束页 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+9');" class="text-center">
+                <h1 class="mb-3">感谢聆听！</h1>
+                <p>期待下节课的深入探讨</p>
+                <div class="mt-8">
+                    <p class="text-sm">问题与讨论</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.js"></script>
+    <script>
+        // 初始化 Reveal.js
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            controls: false,
+            progress: true,
+            center: true,
+            width: 960,
+            height: 700
+        });
+
+        // 嵌入式浏览器功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const browserContainer = document.getElementById('browserContainer');
+            const browserToggle = document.getElementById('browserToggle');
+            const browserClose = document.getElementById('browserClose');
+            const browserMinimize = document.getElementById('browserMinimize');
+            const browserExpand = document.getElementById('browserExpand');
+            const browserUrl = document.getElementById('browserUrl');
+            const browserGo = document.getElementById('browserGo');
+            const browserIframe = document.getElementById('browserIframe');
+            const openLLMVisualizer = document.getElementById('openLLMVisualizer');
+            const openCNB = document.getElementById('openCNB');
+
+            let isMinimized = false;
+            let isExpanded = false;
+
+            // 切换浏览器显示/隐藏
+            browserToggle.addEventListener('click', function() {
+                if (browserContainer.style.display === 'flex') {
+                    browserContainer.style.display = 'none';
+                } else {
+                    browserContainer.style.display = 'flex';
+                    // 重置状态
+                    isMinimized = false;
+                    isExpanded = false;
+                    browserContainer.style.width = '80%';
+                    browserContainer.style.height = '80%';
+                    browserContainer.style.top = '10%';
+                    browserContainer.style.right = '10%';
+                }
+            });
+
+            // 关闭浏览器
+            browserClose.addEventListener('click', function() {
+                browserContainer.style.display = 'none';
+            });
+
+            // 最小化浏览器
+            browserMinimize.addEventListener('click', function() {
+                if (isMinimized) {
+                    browserContainer.style.height = '300px';
+                    isMinimized = false;
+                } else {
+                    browserContainer.style.height = '40px';
+                    isMinimized = true;
+                }
+            });
+
+            // 展开/恢复浏览器
+            browserExpand.addEventListener('click', function() {
+                if (isExpanded) {
+                    browserContainer.style.width = '400px';
+                    browserContainer.style.height = '300px';
+                    browserContainer.style.top = '20px';
+                    browserContainer.style.right = '20px';
+                    isExpanded = false;
+                } else {
+                    browserContainer.style.width = '80%';
+                    browserContainer.style.height = '80%';
+                    browserContainer.style.top = '10%';
+                    browserContainer.style.right = '10%';
+                    isExpanded = true;
+                }
+            });
+
+            // 前往输入的网址
+            browserGo.addEventListener('click', function() {
+                let url = browserUrl.value;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+                browserIframe.src = url;
+            });
+
+            // 按Enter键前往网址
+            browserUrl.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    browserGo.click();
+                }
+            });
+
+            // 打开LLM可视化工具
+            openLLMVisualizer.addEventListener('click', function() {
+                browserContainer.style.display = 'flex';
+                browserUrl.value = 'https://bbycroft.net/llm';
+                browserIframe.src = 'https://bbycroft.net/llm';
+                browserContainer.style.width = '80%';
+                browserContainer.style.height = '80%';
+                browserContainer.style.top = '10%';
+                browserContainer.style.right = '10%';
+            });
+
+            // 打开CNB平台
+            openCNB.addEventListener('click', function() {
+                browserContainer.style.display = 'flex';
+                browserUrl.value = 'https://cloud.tencent.com/product/cnb';
+                browserIframe.src = 'https://cnb.cool/ai-models/Ollama/qwen3/-/tree/main';
+                browserContainer.style.width = '80%';
+                browserContainer.style.height = '80%';
+                browserContainer.style.top = '10%';
+                browserContainer.style.right = '10%';
+            });
+
+            // 点击浏览器外部区域不关闭浏览器
+            browserContainer.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // AI聊天助手功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const aiAssistantContainer = document.getElementById('aiAssistantContainer');
+            const aiAssistantToggle = document.getElementById('aiAssistantToggle');
+            const aiAssistantClose = document.getElementById('aiAssistantClose');
+            const aiAssistantMinimize = document.getElementById('aiAssistantMinimize');
+            const aiAssistantExpand = document.getElementById('aiAssistantExpand');
+            const aiAssistantMessages = document.getElementById('aiAssistantMessages');
+            const aiAssistantInput = document.getElementById('aiAssistantInput');
+            const aiAssistantSend = document.getElementById('aiAssistantSend');
+
+            let isAiMinimized = false;
+            let isAiExpanded = false;
+
+            // 切换AI助手显示/隐藏
+            aiAssistantToggle.addEventListener('click', function() {
+                if (aiAssistantContainer.style.display === 'flex') {
+                    aiAssistantContainer.style.display = 'none';
+                } else {
+                    aiAssistantContainer.style.display = 'flex';
+                    // 重置状态
+                    isAiMinimized = false;
+                    isAiExpanded = false;
+                    aiAssistantContainer.style.width = '350px';
+                    aiAssistantContainer.style.height = '500px';
+                    aiAssistantContainer.style.bottom = '106px';
+                    aiAssistantContainer.style.right = '56px';
+                }
+            });
+
+            // 关闭AI助手
+            aiAssistantClose.addEventListener('click', function() {
+                aiAssistantContainer.style.display = 'none';
+            });
+
+            // 最小化AI助手
+            aiAssistantMinimize.addEventListener('click', function() {
+                if (isAiMinimized) {
+                    aiAssistantContainer.style.height = '500px';
+                    isAiMinimized = false;
+                } else {
+                    aiAssistantContainer.style.height = '60px';
+                    isAiMinimized = true;
+                }
+            });
+
+            // 展开/恢复AI助手
+            aiAssistantExpand.addEventListener('click', function() {
+                if (isAiExpanded) {
+                    aiAssistantContainer.style.width = '350px';
+                    aiAssistantContainer.style.height = '500px';
+                    aiAssistantContainer.style.bottom = '20px';
+                    aiAssistantContainer.style.right = '20px';
+                    isAiExpanded = false;
+                } else {
+                    aiAssistantContainer.style.width = '80%';
+                    aiAssistantContainer.style.height = '80%';
+                    aiAssistantContainer.style.bottom = '10%';
+                    aiAssistantContainer.style.right = '10%';
+                    isAiExpanded = true;
+                }
+            });
+
+            // 发送消息
+            aiAssistantSend.addEventListener('click', sendMessage);
+            aiAssistantInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // 模拟AI响应
+            function simulateAIResponse(userMessage) {
+                // 这里可以替换为真实的AI API调用
+                const responses = {
+                    "你好": "您好！我是AI助手，可以帮助您解答关于AI应用工程的问题。",
+                    "什么是token": "Token是AI模型处理文本的基本单位。在英文中，一个token通常是一个单词或子词；在中文中，一个token通常是一个汉字。Token化是将文本转换为token序列的过程。",
+                    "什么是思维链": "思维链(Chain-of-Thought)是一种提示技术，通过让AI展示其推理步骤来提高复杂问题的解决能力。这种方法特别适用于数学推理、逻辑分析等需要多步思考的任务。",
+                    "如何设计好的提示词": "好的提示词应该：1) 明确角色定位 2) 清晰描述任务 3) 提供必要的上下文 4) 指定输出格式 5) 提供示例（如果需要）。",
+                    "什么是temperature参数": "Temperature参数控制AI输出的随机性。较低的值（如0.2）使输出更确定和一致，较高的值（如0.8）使输出更具创造性和多样性。",
+                    "什么是transformer": "Transformer是一种基于自注意力机制的神经网络架构，由Google在2017年提出。它是现代大语言模型（如GPT、BERT）的基础架构，能够高效处理序列数据。",
+                    "什么是大语言模型": "大语言模型(Large Language Model, LLM)是基于Transformer架构的大规模预训练模型，能够理解和生成自然语言文本。它们通过大量文本数据训练，可以执行各种语言任务。",
+                    "什么是提示词工程": "提示词工程(Prompt Engineering)是设计和优化输入提示词的技术，目的是引导AI模型产生更准确、更相关的输出。它是与大语言模型交互的关键技能。"
+                };
+
+                // 查找匹配的响应
+                for (const [key, value] of Object.entries(responses)) {
+                    if (userMessage.toLowerCase().includes(key.toLowerCase())) {
+                        return value;
+                    }
+                }
+
+                // 默认响应
+                return "这是一个关于AI应用工程的演示系统。在实际应用中，这里会连接到真实的大语言模型API（如OpenAI GPT、Claude等）。您可以尝试询问关于Token、思维链、提示词工程、Transformer架构等问题。";
+            }
+
+            // 发送消息函数
+            function sendMessage() {
+                const message = aiAssistantInput.value.trim();
+                if (!message) return;
+
+                // 添加用户消息
+                addMessage(message, 'user');
+                aiAssistantInput.value = '';
+
+                // 显示正在输入指示器
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'typing-indicator';
+                typingIndicator.innerHTML = `
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                `;
+                aiAssistantMessages.appendChild(typingIndicator);
+                aiAssistantMessages.scrollTop = aiAssistantMessages.scrollHeight;
+
+                // 模拟AI思考时间
+                setTimeout(() => {
+                    // 移除正在输入指示器
+                    aiAssistantMessages.removeChild(typingIndicator);
+                    
+                    // 添加AI响应
+                    const response = simulateAIResponse(message);
+                    addMessage(response, 'ai');
+                }, 1000 + Math.random() * 1000);
+            }
+
+            // 添加消息到聊天窗口
+            function addMessage(text, sender) {
+                const messageElement = document.createElement('div');
+                messageElement.className = sender === 'user' ? 'user-message ai-message' : 'ai-message';
+                
+                const contentElement = document.createElement('div');
+                contentElement.className = 'ai-message-content';
+                contentElement.textContent = text;
+                
+                messageElement.appendChild(contentElement);
+                aiAssistantMessages.appendChild(messageElement);
+                
+                // 滚动到底部
+                aiAssistantMessages.scrollTop = aiAssistantMessages.scrollHeight;
+            }
+
+            // 点击AI助手外部区域不关闭
+            aiAssistantContainer.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+</html>
