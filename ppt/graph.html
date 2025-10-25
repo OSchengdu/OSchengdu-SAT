@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能体与LLM技术架构</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/theme/black.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 添加Mermaid支持 -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        .reveal .slide {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            color: #ffffff;
+        }
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+            font-family: 'Arial', sans-serif;
+            font-size: 20px;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        .reveal p, .reveal li {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #e0e0e0;
+        }
+        .reveal .flex-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.8rem;
+        }
+        .reveal .box {
+            padding: 0.8rem;
+            border-radius: 0.4rem;
+            flex: 1;
+        }
+        .reveal .conclusion {
+            padding: 0.6rem;
+            border-radius: 0.4rem;
+            margin-top: 0.6rem;
+            text-align: center;
+            font-size: 14px;
+        }
+        .roadmap {
+            padding: 15px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .timeline::before {
+             content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item {
+            background: rgba(49, 49, 49, 0.9);
+            padding: 6px 10px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            font-size: 11px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            min-width: 100px;
+        }
+        .reveal img.icon {
+            max-height: 30px;
+            margin: 0.3rem;
+        }
+        .reveal .flow-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        .reveal .path-step {
+            padding: 0.8rem;
+            border-radius: 0.4rem;
+            text-align: center;
+        }
+        .logo {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 36px;
+            height: 36px;
+        }
+        .tech-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            margin: 0.1rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 0.8rem;
+            font-size: 12px;
+        }
+
+        /* Mermaid图表样式 */
+        .mermaid-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 0.8rem;
+            margin: 0.8rem 0;
+        }
+        .mermaid {
+            font-size: 12px;
+        }
+
+        /* 嵌入式浏览器样式 */
+        .browser-container {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 350px;
+            height: 250px;
+            background: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 6px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .browser-header {
+            background: #333;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #555;
+        }
+
+        .browser-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .browser-btn {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .browser-close {
+            background: #ff5f57;
+        }
+
+        .browser-minimize {
+            background: #ffbd2e;
+        }
+
+        .browser-expand {
+            background: #28ca42;
+        }
+
+        .browser-url-bar {
+            flex: 1;
+            margin: 0 8px;
+            background: #222;
+            border: none;
+            border-radius: 3px;
+            padding: 3px 6px;
+            color: white;
+            font-size: 11px;
+        }
+
+        .browser-content {
+            flex: 1;
+            border: none;
+            background: white;
+        }
+
+        .browser-toggle {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background: #191919;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 14px;
+        }
+
+        .browser-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 代码块样式 */
+        .code-block {
+            background: #2d2d2d;
+            border-radius: 6px;
+            padding: 0.8rem;
+            margin: 0.8rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #f8f8f2;
+            overflow-x: auto;
+        }
+
+        /* 表格样式 */
+        .compact-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .compact-table th,
+        .compact-table td {
+            border: 1px solid #555;
+            padding: 4px 6px;
+            text-align: left;
+        }
+        .compact-table th {
+            background: #333;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 嵌入式浏览器 -->
+    <div class="browser-container" id="browserContainer">
+        <div class="browser-header">
+            <div class="browser-controls">
+                <div class="browser-btn browser-close" id="browserClose"></div>
+                <div class="browser-btn browser-minimize" id="browserMinimize"></div>
+                <div class="browser-btn browser-expand" id="browserExpand"></div>
+            </div>
+            <input type="text" class="browser-url-bar" id="browserUrl" value="https://bbycroft.net/llm" placeholder="输入网址...">
+            <button id="browserGo" style="background:#4a5568;color:white;border:none;padding:3px 6px;border-radius:3px;cursor:pointer;font-size:11px;">前往</button>
+        </div>
+        <div class="browser-content">
+            <iframe class="browser-iframe" id="browserIframe" src="https://bbycroft.net/llm"></iframe>
+        </div>
+    </div>
+
+    <button class="browser-toggle" id="browserToggle">
+        <i class="fas fa-window-restore"></i>
+    </button>
+
+    <div class="reveal">
+        <div class="slides">
+            <!-- 第1页：智能体运行机制 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+2');">
+                <h2 class="mb-2">智能体运行机制</h2>
+                
+                <div class="mermaid-container">
+                    <div class="mermaid">
+graph TD
+    A[PEAS模型] --> B[核心循环]
+    B --> C[交互协议]
+    
+    subgraph PEAS模型
+        D[性能度量]
+        E[环境]
+        F[执行器]
+        G[传感器]
+    end
+    
+    subgraph 核心循环
+        H[感知] --> I[思考]
+        I --> J[行动]
+        J --> K[观察]
+        K --> H
+    end
+    
+    subgraph 交互协议
+        L[Thought]
+        M[Action]
+        N[Observation]
+    end
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+                    </div>
+                </div>
+
+                <div class="conclusion">
+                    <p>特点：自主性、闭环反馈、环境交互</p>
+                </div>
+            </section>
+
+            <!-- 第2页：大模型技术演进 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+3');">
+                <h2 class="mb-2">大模型技术演进历程</h2>
+                
+                <div class="mermaid-container">
+                    <div class="mermaid">
+timeline
+    title 大模型技术演进历程
+    2010前 : N-gram<br>统计方法
+    2013-2017 : RNN/LSTM<br>循环网络
+    2017-现在 : Transformer<br>自注意力
+                    </div>
+                </div>
+
+                <h3 class="mt-3">Decoder-Only架构优势</h3>
+                <table class="compact-table">
+                    <tr>
+                        <th>优势</th>
+                        <th>说明</th>
+                        <th>效果</th>
+                    </tr>
+                    <tr>
+                        <td>训练统一</td>
+                        <td>自回归目标</td>
+                        <td>一致性高</td>
+                    </tr>
+                    <tr>
+                        <td>结构简单</td>
+                        <td>易于扩展</td>
+                        <td>维护方便</td>
+                    </tr>
+                    <tr>
+                        <td>生成自然</td>
+                        <td>契合任务</td>
+                        <td>用户体验好</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- 第3页：Transformer核心机制 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+4');">
+                <h2 class="mb-2">Transformer核心机制</h2>
+                
+                <div class="mermaid-container">
+                    <div class="mermaid">
+graph LR
+    A[输入] --> B[自注意力机制]
+    B --> C[多头注意力]
+    C --> D[输出]
+    
+    subgraph 自注意力机制
+        E[Q·Kᵀ/√dₖ V]
+    end
+    
+    subgraph 多头注意力
+        F[Head₁] --> G[⊕]
+        H[Head₂] --> G
+        I[...] --> G
+        J[Head₈] --> G
+    end
+                    </div>
+                </div>
+
+                <div class="flex-container mt-3">
+                    <div class="box">
+                        <h4>编码器-解码器架构</h4>
+                        <ul class="list-disc ml-4 text-xs">
+                            <li>Encoder: 理解输入序列</li>
+                            <li>Decoder: 生成输出序列</li>
+                            <li>注意力机制连接两者</li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <h4>自注意力优势</h4>
+                        <ul class="list-disc ml-4 text-xs">
+                            <li>并行计算效率高</li>
+                            <li>长距离依赖捕捉</li>
+                            <li>全局信息整合</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第4页：Transformer技术细节 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+5');">
+                <h2 class="mb-2">Transformer技术细节</h2>
+                
+                <div class="flex-container">
+                    <div class="box">
+                        <h4>位置编码</h4>
+                        <div class="code-block">
+PE(pos,2i) = sin(pos/10000^(2i/d_model))
+PE(pos,2i+1) = cos(pos/10000^(2i/d_model))
+                        </div>
+                    </div>
+                    
+                    <div class="box">
+                        <h4>前馈网络</h4>
+                        <div class="code-block">
+FFN(x) = max(0, xW₁ + b₁)W₂ + b₂
+流程: x → ReLU → Linear → out
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-container mt-3">
+                    <div class="box">
+                        <h4>残差连接</h4>
+                        <div class="code-block">
+# 残差连接公式
+Output = x + Sublayer(x)
+
+# 代码框架
+class MultiHeadAttention:
+    def forward(self, Q, K, V):
+        attn = Q @ K.T / math.sqrt(d_k)
+        # ... 注意力计算
+        return output
+                        </div>
+                    </div>
+                    
+                    <div class="box">
+                        <h4>层归一化</h4>
+                        <ul class="list-disc ml-4 text-xs">
+                            <li>稳定训练过程</li>
+                            <li>加速模型收敛</li>
+                            <li>减少内部协变量偏移</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第5页：模型交互关键技术 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+6');">
+                <h2 class="mb-2">模型交互关键技术</h2>
+                
+                <h4>提示工程分类</h4>
+                <table class="compact-table">
+                    <tr>
+                        <th>类型</th>
+                        <th>示例数量</th>
+                        <th>特点</th>
+                    </tr>
+                    <tr>
+                        <td>零样本</td>
+                        <td>0个</td>
+                        <td>直接指令</td>
+                    </tr>
+                    <tr>
+                        <td>单样本</td>
+                        <td>1个</td>
+                        <td>提供示例</td>
+                    </tr>
+                    <tr>
+                        <td>少样本</td>
+                        <td>多个</td>
+                        <td>多个示例</td>
+                    </tr>
+                </table>
+
+                <div class="flex-container mt-3">
+                    <div class="box">
+                        <h4>思维链示例</h4>
+                        <div class="code-block">
+问题：80场赢60%，15场赢12场，总胜率？
+思考：
+1. 第一季48胜
+2. 总95场60胜  
+3. 60/95≈63.16%
+                        </div>
+                    </div>
+                    
+                    <div class="box">
+                        <h4>采样参数对比</h4>
+                        <table class="compact-table">
+                            <tr>
+                                <th>参数</th>
+                                <th>作用</th>
+                                <th>效果</th>
+                            </tr>
+                            <tr>
+                                <td>Temperature</td>
+                                <td>控制随机性</td>
+                                <td>T小→确定</td>
+                            </tr>
+                            <tr>
+                                <td>Top-k</td>
+                                <td>候选数量</td>
+                                <td>k=1贪心</td>
+                            </tr>
+                            <tr>
+                                <td>Top-p</td>
+                                <td>概率累积</td>
+                                <td>p=0.9动态</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第6页：文本分词与关键技术总结 -->
+            <section style="background-image: url('https://via.placeholder.com/960x700?text=AI+Background+7');">
+                <h2 class="mb-2">文本分词与关键技术总结</h2>
+                
+                <div class="mermaid-container">
+                    <div class="mermaid">
+flowchart TD
+    A[初始: h u g] --> B[统计: u-g最多]
+    B --> C[合并: h ug]
+    C --> D[统计: ug-</w>最多]
+    D --> E[合并: h ug</w>]
+    E --> F[... 直到词表满]
+                    </div>
+                </div>
+
+                <div class="flex-container mt-3">
+                    <div class="box">
+                        <h4>分词对开发者的影响</h4>
+                        <ul class="list-disc ml-4 text-xs">
+                            <li><strong>上下文窗口</strong>: 按Token数计算</li>
+                            <li><strong>API成本</strong>: 按Token计费</li>
+                            <li><strong>模型表现</strong>: 分词影响理解</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="box">
+                        <h4>关键技术要点</h4>
+                        <ul class="list-disc ml-4 text-xs">
+                            <li>✓ 智能体：感知-思考-行动循环</li>
+                            <li>✓ LLM：自注意力+位置编码</li>
+                            <li>✓ 交互：提示工程+参数调控</li>
+                            <li>✓ 分词：BPE算法处理文本</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.js"></script>
+    <script>
+        // 初始化Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            },
+            timeline: {
+                useMaxWidth: true
+            }
+        });
+
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            controls: false,
+            progress: true,
+            center: true,
+            width: 960,
+            height: 700
+        });
+
+        // 当幻灯片切换时重新渲染Mermaid图表
+        Reveal.addEventListener('slidechanged', function(event) {
+            mermaid.init(undefined, '.mermaid');
+        });
+
+        // 浏览器控制代码
+        document.addEventListener('DOMContentLoaded', function() {
+            const browserContainer = document.getElementById('browserContainer');
+            const browserToggle = document.getElementById('browserToggle');
+            const browserClose = document.getElementById('browserClose');
+            const browserMinimize = document.getElementById('browserMinimize');
+            const browserExpand = document.getElementById('browserExpand');
+            const browserUrl = document.getElementById('browserUrl');
+            const browserGo = document.getElementById('browserGo');
+            const browserIframe = document.getElementById('browserIframe');
+
+            let isMinimized = false;
+            let isExpanded = false;
+
+            browserToggle.addEventListener('click', function() {
+                if (browserContainer.style.display === 'flex') {
+                    browserContainer.style.display = 'none';
+                } else {
+                    browserContainer.style.display = 'flex';
+                    isMinimized = false;
+                    isExpanded = false;
+                    browserContainer.style.width = '80%';
+                    browserContainer.style.height = '80%';
+                    browserContainer.style.top = '10%';
+                    browserContainer.style.right = '10%';
+                }
+            });
+
+            browserClose.addEventListener('click', function() {
+                browserContainer.style.display = 'none';
+            });
+
+            browserMinimize.addEventListener('click', function() {
+                if (isMinimized) {
+                    browserContainer.style.height = '250px';
+                    isMinimized = false;
+                } else {
+                    browserContainer.style.height = '35px';
+                    isMinimized = true;
+                }
+            });
+
+            browserExpand.addEventListener('click', function() {
+                if (isExpanded) {
+                    browserContainer.style.width = '350px';
+                    browserContainer.style.height = '250px';
+                    browserContainer.style.top = '15px';
+                    browserContainer.style.right = '15px';
+                    isExpanded = false;
+                } else {
+                    browserContainer.style.width = '80%';
+                    browserContainer.style.height = '80%';
+                    browserContainer.style.top = '10%';
+                    browserContainer.style.right = '10%';
+                    isExpanded = true;
+                }
+            });
+
+            browserGo.addEventListener('click', function() {
+                let url = browserUrl.value;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+                browserIframe.src = url;
+            });
+
+            browserUrl.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    browserGo.click();
+                }
+            });
+
+
+        });
+    </script>
+</body>
+</html>
