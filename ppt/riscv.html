@@ -23,11 +23,11 @@
         }
         .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
             font-family: 'Arial', sans-serif;
-            font-size: 30px; /* 标题字体大小 */
+            font-size: 30px;
             color: #ffffff;
         }
         .reveal p, .reveal li {
-            font-size: 16px; /* 正文字体大小 */
+            font-size: 16px;
             line-height: 1.5;
             color: #e0e0e0;
         }
@@ -61,15 +61,134 @@
         .reveal .flow-diagram .gear {
             text-align: center;
         }
-        .reveal .path-step {
-
-        }
         .logo {
-            position: absolute;
-            top:51%;
-            left:31%;
+            display: -webkit-inline-box;
             width: 48px;
             height: 48px;
+        }
+
+        /* 控制按钮 */
+        .control-bar {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #191919;
+            padding: 1rem 1rem;
+            border-radius: 30px;
+            display: flex;
+            gap: 1rem;
+            z-index: 1002;
+        }
+        .control-btn {
+            background: #0f0f0f;
+            color: white;
+            border: none;
+            width: 250px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .control-btn:hover {
+            background: #191917;
+        }
+
+        /* AI 助手面板样式 */
+        .ai-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background: #1a1a1a;
+            border-left: 1px solid #333;
+            z-index: 1003;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        }
+
+        .ai-panel.open {
+            right: 0;
+        }
+
+        .ai-header {
+            background: #2a2a2a;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #444;
+        }
+
+        .ai-header button {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .ai-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ai-message {
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .ai-user {
+            background: #0066cc;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-bot {
+            background: #333;
+            color: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+	    line-height:27px;
+        }
+
+        .ai-input-area {
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #444;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: white;
+        }
+
+        .ai-send {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -78,11 +197,15 @@
         <div class="slides">
             <!-- 第1页：封面页 -->
             <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+1');">
-                <img src="https://avatars.githubusercontent.com/u/190277873?s=64&v=4" alt="Logo" class="logo">
                 <div class="text-center">
-                    <h1 class="mb-3">“教育-科技-人才”视角下的RISC-V与开源操作系统生态调研</h1>
-                    <h3 class="mb-3">主题调研与案例分析</h3>
-                    <p>小组成员：谬雨轩、苗雪冰、谭峻瀚</p>
+                    <div class="x" style="">
+                        <h1 class="mb-3">"教育-科技-人才"视角下的RISC-V与开源操作系统生态调研</h1>
+                        <h3 class="mb-3">主题调研与案例分析</h3>
+                        <p>
+                            <img src="https://avatars.githubusercontent.com/u/190277873?s=64&v=4" alt="Logo" class="logo">
+                            小组成员：缪宇轩、苗雪冰、谭峻瀚、郑天诣
+                        </p>
+                    </div>
                 </div>
             </section>
 
@@ -96,11 +219,11 @@
                         <p><i class="fa-solid fa-microchip icon"></i> ARM/Android (AA) 体系</p>
                         <p class="font-bold mt-2">生态繁荣，容易被卡脖</p>
                     </div>
-                    
+
                     <div class="box">
                         <h3>国产芯片架构</h3>
-                        <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/RISC-V-logo.svg/250px-RISC-V-logo.svg.png" alt="RISC-V Logo" class="icon"style="max-height: 20px;margin-left: 157px">  RISC-V 开源指令集</p>
-                        <img src="https://www.openeuler.org/assets/logo.XeUCiAZu.svg" alt="OpenEuler Logo" class="icon"style="margin-left: 148px">
+                        <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/RISC-V-logo.svg/250px-RISC-V-logo.svg.png" alt="RISC-V Logo" class="icon" style="max-height: 20px;margin-left: 157px">  RISC-V 开源指令集</p>
+                        <img src="https://www.openeuler.org/assets/logo.XeUCiAZu.svg" alt="OpenEuler Logo" class="icon" style="margin-left: 148px">
                         <p> OpenEuler 开源操作系统</p>
                         <p class="font-bold mt-2">riscv成熟度相比龙芯等国产芯片高，在开源的基础上，其生态和商业基本已被国家企业掌握</p>
                     </div>
@@ -110,9 +233,9 @@
                         <h3>现在的芯片格局</h3>
                         <p><i class="fa-brands fa-intel icon"></i> X86/Windows (Wintel) 体系-微软、英特尔等</p>
                         <p><i class="fa-solid fa-microchip icon"></i> ARM/Android (AA) 体系</p>
-
                         <p class="font-bold mt-2">生态繁荣，容易被卡脖</p>
-                    </div>               
+                    </div>
+                </div>
             </section>
 
             <!-- 第3页：核心发现一 -->
@@ -139,21 +262,20 @@
                         <p class="font-bold mt-2">规模化应用和arm以及aarch等系列仍然有不小差距</p>
                     </div>
                 </div>
-                <div class="conclusion">
-                </div>
+                <div class="conclusion"></div>
                 <div class="box">
-                        <h3>贡献经历</h3>
-                        <ul class="list-disc ml-5">
-                            <li>参与基于openeuler的分发版上的深度学习框架的迁移和平台优化</li>
-                            <li>基础软件布局已经趋于成熟，但还有很多空间可以参与贡献</li>
-                        </ul>
-                        <p class="font-bold mt-2"></p>
-                    </div>
+                    <h3>贡献经历</h3>
+                    <ul class="list-disc ml-5">
+                        <li>参与基于openeuler的分发版上的深度学习框架的迁移和平台优化</li>
+                        <li>基础软件布局已经趋于成熟，但还有很多空间可以参与贡献</li>
+                    </ul>
+                    <p class="font-bold mt-2"></p>
+                </div>
             </section>
 
             <!-- 第4页：核心发现二 -->
             <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+4');">
-                <h2 class="mb-3">开源社区已成为“产-学-研”协同的核心枢纽</h2>
+                <h2 class="mb-3">开源社区已成为"产-学-研"协同的核心枢纽</h2>
                 <div class="flow-diagram">
                     <div class="gear">
                         <i class="fa-solid fa-gear fa-2x mb-2"></i>
@@ -181,15 +303,15 @@
                     <p>社区实现了【教育】赋能【科技】、【科技】锤炼【人才】、【人才】反哺【产业】的完美协同</p>
                 </div>
                 <p>
-                相关社区：OSC-DEV、GTOC、RISCVers <br>
-                相关竞赛：Cie全国risc-v高水平创新及应用大赛、Rvspoc
-            </p>
+                    相关社区：OSC-DEV、GTOC、RISCVers <br>
+                    相关竞赛：Cie全国risc-v高水平创新及应用大赛、Rvspoc
+                </p>
             </section>
 
             <!-- 第5页：开源贡献实践 -->
             <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+5');">
                 <h3 class="mb-3">开源贡献实践：以RISC-online项目为例</h2>
-                <div class="flex-container">                    
+                <div class="flex-container">
                     <div class="box">
                         <h2>RISC-online：反汇编工具</h2>
                         <p>专为RISC-V优化的反汇编工具，将二进制代码解析为汇编语言，支持调试与分析。</p>
@@ -198,17 +320,16 @@
                     </div>
                     <div class="box">
                         <h2>制度与地域支撑</h2>
-                        <p><strong>OSPP计划：</strong>“GSoC中国版”，提供资金与导师，助力学生融入开源社区。</p>
+                        <p><strong>OSPP计划：</strong>"GSoC中国版"，提供资金与导师，助力学生融入开源社区。</p>
                         <p><strong>武汉十大开源：</strong>RISC-online隶属RustSBI，体现城市对开源的战略投入。</p>
                         <p><strong>实践成果：</strong>团队PR优化显示逻辑被合并，提升工具易用性。</p>
                     </div>
                 </div>
-                <div class="conclusion">
-                </div>
+                <div class="conclusion"></div>
                 <div class="box">
                     <h2>贡献经历(谬)</h2>
-                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.IcOlXUM-VPow5SI98-9oKgHaGS%3Fcb%3D12%26pid%3DApi&f=1&ipt=be56bd9dca5061adb966026418ec1cd71807721752b8b0289a5ced68e67b9a91&ipo=images" alt="" style="width:325px;height: 340px;margin-left: 34%;">    
-                </div>     
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.IcOlXUM-VPow5SI98-9oKgHaGS%3Fcb%3D12%26pid%3DApi&f=1&ipt=be56bd9dca5061adb966026418ec1cd71807721752b8b0289a5ced68e67b9a91&ipo=images" alt="" style="width:325px;height: 340px;margin-left: 34%;">
+                </div>
             </section>
 
             <!-- 第6页：启示与展望 -->
@@ -217,7 +338,7 @@
                 <div class="box">
                     <p><i class="fa-solid fa-book fa-lg mr-2"></i> <strong>对教育的启示</strong></p>
                     <ul class="list-disc ml-5">
-                        <li>鼓励“开源式学习”，将社区贡献作为高阶实践</li>
+                        <li>鼓励"开源式学习"，将社区贡献作为高阶实践</li>
                         <li>培养学生解决真实、开放性问题的能力</li>
                     </ul>
                 </div>
@@ -228,30 +349,124 @@
                         <li>在RISC-V与开源OS的广阔天地中，实现个人价值</li>
                     </ul>
                 </div>
-
             </section>
 
             <!-- 第7页：谢谢聆听 -->
             <section style="background-image: url('https://via.placeholder.com/960x700?text=Tech+Background+8');" class="text-center">
                 <h1 class="mb-3">感谢聆听，欢迎提问！</h1>
-                <p>谬雨轩、苗雪冰、谭峻瀚</p>
+                <p>谬雨轩、郑天诣、苗雪冰、谭峻瀚</p>
             </section>
         </div>
+    </div>
+
+    <!-- AI 答疑助手面板 -->
+    <div id="aiPanel" class="ai-panel">
+        <div class="ai-header">
+            <span>AI 答疑助手</span>
+            <button onclick="toggleAI()">关闭</button>
+        </div>
+        <div id="aiBody" class="ai-body">
+            <div class="ai-message ai-bot">您好！我是RISC-V与开源生态AI助手，可回答技术、项目、社区等问题。</div>
+        </div>
+        <div class="ai-input-area">
+            <input type="text" id="aiInput" class="ai-input" placeholder="输入问题...">
+            <button class="ai-send" onclick="sendAI()">发送</button>
+        </div>
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="control-bar">
+        <button class="control-btn" onclick="toggleBrowser()" title="内置浏览器">browse</button>
+        <button class="control-btn" id="ai-panel" onclick="toggleAI()" title="AI答疑助手">AI</button>
     </div>
 
     <!-- 引入 Reveal.js 脚本 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.js"></script>
     <script>
-        // 初始化 Reveal.js
         Reveal.initialize({
             hash: true,
             transition: 'slide',
-            transitionSpeed: 'default',
             controls: true,
             progress: true,
             center: true,
             width: 960,
             height: 700
+        });
+
+        // AI 答疑助手
+        async function sendAI() {
+            const input = document.getElementById('aiInput');
+            const body = document.getElementById('aiBody');
+            const question = input.value.trim();
+            if (!question) return;
+
+            // 用户消息
+            const userMsg = document.createElement('div');
+            userMsg.className = 'ai-message ai-user';
+            userMsg.textContent = question;
+            body.appendChild(userMsg);
+            input.value = '';
+            body.scrollTop = body.scrollHeight;
+
+            // 加载中
+            const loading = document.createElement('div');
+            loading.className = 'ai-message ai-bot';
+            loading.textContent = '思考中...';
+            body.appendChild(loading);
+
+            try {
+                const url = 'https://api.siliconflow.com/v1/chat/completions';
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer sk-nkisgiufnncnwsklahpjzlexcuvdsoitnzyjtjwbhfxfgmqz',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "model": "tencent/Hunyuan-MT-7B",
+                        "messages": [
+                            {
+                                "role": "system",
+                                "content": "构建\"开源创新共同体\"：以新时代思想阐释技术变革与协作精神**一、核心指导思想与宣传基调**1.  **以\"新发展理念\"为统领：** 全文需贯穿\"创新、协调、绿色、开放、共享\"的新发展理念，将其作为解读开源运动与科技发展的核心框架。强调开源本身就是\"开放\"与\"共享\"的典范，是驱动\"创新\"的沃土，并通过社区治理实现\"协调\"，最终通过高效、透明的数字基础设施助力\"绿色\"发展。2.  **锚定\"新发展格局\"与\"高水平科技自立自强\"：** 将开源社区的构建，与中国加快构建以国内大循环为主体、国内国际双循环相互促进的新发展格局相联系。阐述参与和主导开源项目，不是闭门造车，而是在更高水平上融入全球科技网络，是实现\"科技自立自强\"的必由之路和智慧路径。这体现了\"守正创新\"的原则——守住核心技术能力之\"正\"，创开源协作模式之\"新\"。3.  **体现\"人类命运共同体\"理念：** 将全球开源协作视为构建\"网络空间命运共同体\"和\"人类命运共同体\"在数字时代的生动实践。超越国界、种族、意识形态的开发者们，为了一个共同的技术目标而协作，这正是\"和而不同\"、\"美美与共\"的东方智慧在全球技术治理中的体现。**二、技术词汇的思想性阐释框架**请运用以下思想，对关键的技术概念进行升维阐释,比如：1.  **\"人民至上\"与\"开源许可证（如GPL）：**    *   **阐释路径：** 传统私有软件将代码视为私有财产，设置访问壁垒。而GPL等开源许可证的核心思想是\"代码为人民服务\"，它通过法律框架确保了软件的自由使用、学习、修改和分发权，将数字时代的\"生产资料\"向最广大的人民开发者开放。这体现了\"发展为了人民、发展依靠人民、发展成果由人民共享\"的思想。**可以说，开源许可证是\"人民至上\"价值观在数字产权领域的一次伟大制度创新。**2.  **\"全过程人民民主\"与\"社区治理（Governance）：**    *   **阐释路径：** 一个健康的开源社区，其决策并非由单一公司或个人独断，而是通过公开的邮件列表、论坛、代码审查和投票机制，让所有贡献者都能参与到项目的\"立规、议事、决策\"中来。这种基于贡献和共识的治理模式，是\"全过程人民民主\"在技术社区的微观缩影。它确保了项目的发展方向能够反映最广泛贡献者的共同意志，实现了技术领域的众人事众人商。",
+
+                            },
+                            {
+                                "role": "user",
+                                "content": question
+                            }
+                        ]
+                    })
+                };
+
+                const response = await fetch(url, options);
+                const data = await response.json();
+
+                loading.remove();
+                const botMsg = document.createElement('div');
+                botMsg.className = 'ai-message ai-bot';
+                botMsg.textContent = data.choices[0].message.content;
+                body.appendChild(botMsg);
+                body.scrollTop = body.scrollHeight;
+            } catch (error) {
+                loading.remove();
+                const errMsg = document.createElement('div');
+                errMsg.className = 'ai-message ai-bot';
+                errMsg.textContent = '网络错误，请重试: ' + error.message;
+                body.appendChild(errMsg);
+            }
+        }
+
+        function toggleAI() {
+            document.getElementById('aiPanel').classList.toggle('open');
+        }
+
+        function toggleBrowser() {
+            alert("");
+        }
+
+        // 回车发送
+        document.getElementById('aiInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendAI();
         });
     </script>
 </body>
